@@ -131,7 +131,7 @@ api_fqdn 'chefserver.cheffian.com'
 # NOT SURE IF NEEDED:
 </code></pre></li>
 <li><p>create a user and an organization with that user associated (<code>-a</code>):
-    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x70;&#x62;&#117;&#114;&#107;&#104;&#111;&#108;&#100;&#101;&#114;&#64;&#x63;&#104;&#x65;&#102;&#x2e;&#105;&#x6f;">&#112;&#x62;&#117;&#114;&#x6b;&#x68;&#x6f;&#x6c;&#100;&#101;&#114;&#x40;&#x63;&#x68;&#x65;&#x66;&#x2e;&#105;&#x6f;</a> TestPassword -f pdb.pem
+    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#x70;&#x62;&#x75;&#x72;&#x6b;&#104;&#x6f;&#108;&#x64;&#101;&#x72;&#64;&#x63;&#x68;&#x65;&#x66;&#46;&#x69;&#111;">&#112;&#x62;&#117;&#x72;&#x6b;&#x68;&#x6f;&#108;&#x64;&#101;&#x72;&#64;&#x63;&#x68;&#101;&#102;&#46;&#105;&#x6f;</a> TestPassword -f pdb.pem
     sudo chef-server-ctl org-create pdb_org pdb_org -f pdb_org.pem -a pdb</p></li>
 <li>make <code>current_dir/.chef/knife.rb</code> and copy the above .pem file into the <code>.chef</code> directory:
     cd .chef
@@ -365,6 +365,8 @@ policy_group 'prod'
     <p class="meta">
       
       
+        <a class="basic-alignment right" href="/blog/2015/05/04/that-thing-add-packaged-gems-into-your-gem-path/" title="Next Post: That thing to add packaged Gems into your GEM PATH">That thing to add packaged Gems into your GEM PATH &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -376,6 +378,10 @@ policy_group 'prod'
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/05/04/that-thing-add-packaged-gems-into-your-gem-path/">That Thing to Add Packaged Gems Into Your GEM PATH</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/04/23/emulating-cookbook-semver-build-numbers-with-chef-policyfiles/">Emulating Cookbook Semver Build Numbers With Chef Policyfiles</a>
