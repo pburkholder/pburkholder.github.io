@@ -7,6 +7,7 @@ categories:
 ---
 
 This is a posting of [https://github.com/pburkholder/buildnumber/blob/master/README.md]
+
 # policyfiles and builds
 
 Demonstrate use of policyfiles to emulate build number increments.

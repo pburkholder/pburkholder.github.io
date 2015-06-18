@@ -1,0 +1,59 @@
+---
+layout: post
+title: "RFC report 2015 Jun 18"
+date: 2015-06-18 12:41:05 -0400
+comments: true
+categories: 
+---
+
+## Community updates:
+
+Chef Community Summit - http://summit.chef.io Oct 14-15 in Seattle.
+London will be November 3 & 4. Registration for that should open by end of
+next week or so. Mark your calendars
+
+ChefConf 2016 will be moved as May conflicted with partner conferences. New
+dates to be announced soon.
+
+Mailing list migration to Google Groups not happening for technical reasons.
+May move to Discourse; discussions underway. Other stuff:
+
+Product Feedback - http://feedback.chef.io - read, contribute, comment, and
+vote on things that fall outside of support requests, this RFC process, etc.
+and http://www.meetup.com/Chef-Office-Hours/ where we've been announcing
+regular Chef Office Hours
+
+Also, https://github.com/chef/chef-rfc/blob/master/rfc029-governance-policy.md
+CBGB members need to be selected.
+
+## Product updates
+
+Chef server 12.1, Ent Server 11.3.2 are in progress, patching Redis is a big
+push here.  Manage and Supermarked updates coming soon too.
+
+## RFCs
+
+https://github.com/chef/chef-rfc/pull/118 garnered the most discussion.
+Consensus is that having Ohai behave on the CLI like it does during a Chef run
+is a nice win, but there are some details still being ironed out.  Also,
+moving the hints systems into a central config will probably help our users.
+
+
+>  The core desire is to have a way to configure ohai so that things like knife bootstrap can leave the system set up so that ohai run directly and ohai run from Chef will behave the same way. 
+> [the] most illustrative use cases so far:
+>  -  I want to disable an ohai plugin,
+>  - I want to set the ohai plugin path.
+>  - I want to change the source of data for the hostname plugin.
+>  - I want to retrieve EC2 metadata in the ec2 plugin.
+
+RFCs to move OpenBSD to tier 2 approved and changing `resource attributes` to
+`resource properties` also approved
+(https://github.com/chef/chef-rfc/pull/128) -- This is a pretty interesting
+change.  Ubuntu 10.04 is on track to be yanked.
+
+## Next time
+
+https://github.com/chef/chef-rfc/pull/135 - some proposals to change resource property default behaviors. Mostly I'm opposed to adding more API keywords as they only have utility in some edge cases, and make the finding the useful API methods harder to find and use.
+https://github.com/chef/chef-rfc/pull/136 - clarify some Chef resoure naming precedence
+
+
