@@ -9,8 +9,8 @@
   <meta name="author" content="Peter Burkholder">
 
   
-  <meta name="description" content="It&rsquo;s Gem::Specification.reset For example, in a Chef cookbook I&rsquo;m installing the conjur package from
-Conjur, and need those Gems &hellip;">
+  <meta name="description" content="Community updates: Chef Community Summit - http://summit.chef.io Oct 14-15 in Seattle.
+London will be November 3 &amp; 4. Registration for that &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,82 @@ Conjur, and need those Gems &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/06/18/rfc-report-2015-jun-18/">RFC Report 2015 Jun 18</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-06-18T12:41:05-04:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:41 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Community updates:</h2>
+
+<p>Chef Community Summit - <a href="http://summit.chef.io">http://summit.chef.io</a> Oct 14-15 in Seattle.
+London will be November 3 &amp; 4. Registration for that should open by end of
+next week or so. Mark your calendars</p>
+
+<p>ChefConf 2016 will be moved as May conflicted with partner conferences. New
+dates to be announced soon.</p>
+
+<p>Mailing list migration to Google Groups not happening for technical reasons.
+May move to Discourse; discussions underway. Other stuff:</p>
+
+<p>Product Feedback - <a href="http://feedback.chef.io">http://feedback.chef.io</a> - read, contribute, comment, and
+vote on things that fall outside of support requests, this RFC process, etc.
+and <a href="http://www.meetup.com/Chef-Office-Hours/">http://www.meetup.com/Chef-Office-Hours/</a> where we&rsquo;ve been announcing
+regular Chef Office Hours</p>
+
+<p>Also, <a href="https://github.com/chef/chef-rfc/blob/master/rfc029-governance-policy.md">https://github.com/chef/chef-rfc/blob/master/rfc029-governance-policy.md</a>
+CBGB members need to be selected.</p>
+
+<h2>Product updates</h2>
+
+<p>Chef server 12.1, Ent Server 11.3.2 are in progress, patching Redis is a big
+push here.  Manage and Supermarked updates coming soon too.</p>
+
+<h2>RFCs</h2>
+
+<p><a href="https://github.com/chef/chef-rfc/pull/118">https://github.com/chef/chef-rfc/pull/118</a> garnered the most discussion.
+Consensus is that having Ohai behave on the CLI like it does during a Chef run
+is a nice win, but there are some details still being ironed out.  Also,
+moving the hints systems into a central config will probably help our users.</p>
+
+<blockquote><p> The core desire is to have a way to configure ohai so that things like knife bootstrap can leave the system set up so that ohai run directly and ohai run from Chef will behave the same way.
+[the] most illustrative use cases so far:
+ -  I want to disable an ohai plugin,
+ - I want to set the ohai plugin path.
+ - I want to change the source of data for the hostname plugin.
+ - I want to retrieve EC2 metadata in the ec2 plugin.</p></blockquote>
+
+<p>RFCs to move OpenBSD to tier 2 approved and changing <code>resource attributes</code> to
+<code>resource properties</code> also approved
+(<a href="https://github.com/chef/chef-rfc/pull/128">https://github.com/chef/chef-rfc/pull/128</a>) &ndash; This is a pretty interesting
+change.  Ubuntu 10.04 is on track to be yanked.</p>
+
+<h2>Next time</h2>
+
+<p><a href="https://github.com/chef/chef-rfc/pull/135">https://github.com/chef/chef-rfc/pull/135</a> - some proposals to change resource property default behaviors. Mostly I&rsquo;m opposed to adding more API keywords as they only have utility in some edge cases, and make the finding the useful API methods harder to find and use.
+<a href="https://github.com/chef/chef-rfc/pull/136">https://github.com/chef/chef-rfc/pull/136</a> - clarify some Chef resoure naming precedence</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -183,7 +259,7 @@ api_fqdn 'chefserver.cheffian.com'
 # NOT SURE IF NEEDED:
 </code></pre></li>
 <li><p>create a user and an organization with that user associated (<code>-a</code>):
-    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#x70;&#x62;&#x75;&#x72;&#x6b;&#104;&#x6f;&#108;&#x64;&#101;&#x72;&#64;&#x63;&#x68;&#x65;&#x66;&#46;&#x69;&#111;">&#112;&#x62;&#117;&#x72;&#x6b;&#x68;&#x6f;&#108;&#x64;&#101;&#x72;&#64;&#x63;&#x68;&#101;&#102;&#46;&#105;&#x6f;</a> TestPassword -f pdb.pem
+    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#x6d;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#x70;&#98;&#117;&#114;&#107;&#104;&#x6f;&#108;&#100;&#101;&#x72;&#x40;&#x63;&#104;&#x65;&#x66;&#x2e;&#105;&#x6f;">&#x70;&#98;&#x75;&#x72;&#107;&#x68;&#x6f;&#x6c;&#x64;&#101;&#x72;&#x40;&#x63;&#x68;&#x65;&#102;&#x2e;&#x69;&#x6f;</a> TestPassword -f pdb.pem
     sudo chef-server-ctl org-create pdb_org pdb_org -f pdb_org.pem -a pdb</p></li>
 <li>make <code>current_dir/.chef/knife.rb</code> and copy the above .pem file into the <code>.chef</code> directory:
     cd .chef
@@ -402,6 +478,10 @@ policy_group 'prod'
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/06/18/rfc-report-2015-jun-18/">RFC Report 2015 Jun 18</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/05/04/that-thing-add-packaged-gems-into-your-gem-path/">That Thing to Add Packaged Gems Into Your GEM PATH</a>
