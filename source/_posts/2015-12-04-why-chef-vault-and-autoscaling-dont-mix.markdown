@@ -90,9 +90,9 @@ You can think about secrets-management with Chef in a hierarchy:
  Each step up makes your infrastructure more complicated, but protects your secrets better. But even Step 1 is immeasurably better than storing secrets in clear-text, and you shouldn't let the perfect be the enemy of the good. Choose an implementation you can realize, then iterate to make it better.
 
 
-# What is Chef Inc doing to help? \[N.B: My
+# What is Chef Inc doing to help?
 
-This is some of what's going on here:
+This is some of what's going on here: \[Again, not official\]
 
 1. Providing better documentation and guidance
   - This response is a first draft of new knowledge base article, which will incorporate Noah's blog post, with updates
@@ -103,7 +103,7 @@ Hope that helps...
 
 --Peter
 
-# P.S. What's a node impersonation attack?
+# P.S. What's a node impersonation attack?[&nbsp;](#node_impersonation)
 
 Suppose you have:
 - a provisioning node that rekeys chef-vault based on updated search results
