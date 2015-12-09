@@ -4,7 +4,7 @@
   <title><![CDATA[A Blog]]></title>
   <link href="http://pburkholder.github.io/atom.xml" rel="self"/>
   <link href="http://pburkholder.github.io/"/>
-  <updated>2015-06-18T13:10:44-04:00</updated>
+  <updated>2015-12-09T09:33:04-05:00</updated>
   <id>http://pburkholder.github.io/</id>
   <author>
     <name><![CDATA[Peter Burkholder]]></name>
@@ -12,6 +12,187 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Why Chef-vault and Autoscaling Don't Mix]]></title>
+    <link href="http://pburkholder.github.io/blog/2015/12/04/why-chef-vault-and-autoscaling-dont-mix/"/>
+    <updated>2015-12-04T10:04:06-05:00</updated>
+    <id>http://pburkholder.github.io/blog/2015/12/04/why-chef-vault-and-autoscaling-dont-mix</id>
+    <content type="html"><![CDATA[<p>[Note: The opinions here are mine and do not reflect a position of my employer, Chef Inc.]</p>
+
+<p>I received this question through our support team:</p>
+
+<blockquote><p>We’ve got a handful of cookbooks that rely on Chef Vault to pick up some secrets – passwords, SSL certs, etc. When we bootstrap new nodes with vault-dependent cookbooks in the run list, the chef-client run fails because the node doesn’t have access to the vault. There seems to be a ‘chicken and egg’ scenario in that we can’t seem add a new node’s host key to a vault during bootstrap – adding an existing node to a vault happens with a knife search, which requires a node to have successfully completed a chef-client run and be registered with the server, but our fresh nodes haven’t done this (and fail due to this…). I think you can see where I’m going with this. I’ve found some discussions around this on the web and have seen that knife bootstrap appears to have some switches for vault, so I tend to believe what we’re trying to do is possible – just haven’t had any success.</p>
+
+<p>Our new nodes are launched on [a cloud] by an automated process &hellip;, but during the customization step of provisioning (cloudinit perhaps?) the bootstrap is kicked off on the node and the run list is converged.</p></blockquote>
+
+<p>Here&rsquo;s my response:</p>
+
+<h1>ChefVault and knife bootstrap</h1>
+
+<p>I&rsquo;m going to assume you are already familiar with the <a href="https://github.com/chef/chef-vault/blob/master/THEORY.md">theory behind chef-vault</a>, as you&rsquo;ll need that background when implementing chef-vault for an organization. For the first part of your use-case, how to bootstrap a node when using chef-vault, you can use features of <code>validatorless-bootstrap</code> when the bootstrapping client (e.g. your workstation) has an administrative key on the chef-server.</p>
+
+<p>One of my chef-vault demos has commands like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>knife bootstrap ec2-52-2-56-144.compute-1.amazonaws.com \
+</span><span class='line'>    -N testvault-i-35a4119d   -r 'role[sensu_chefvault]' \
+</span><span class='line'>    --bootstrap-vault-json '{"sensu_vault":["rabbitmq"]}'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>which generates the output like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Creating new client for testvault-i-35a4119d
+</span><span class='line'>Creating new node for testvault-i-35a4119d
+</span><span class='line'>Connecting to ec2-52-2-56-144.compute-1.amazonaws.com</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What&rsquo;s going on here is that the <code>-N testvault-i-35a4119d  -r 'role[sensu_chefvault]'</code> options create a new <code>node</code> and <code>client</code> on the chef-server, with runlist &lsquo;role[sensu_chefvault]&rsquo;, even if the box in question doesn&rsquo;t exist yet. Further, the the <code>--bootstrap-vault-json '{"sensu_vault":["rabbitmq"]}'</code> specifies a vault and item to rekey before continuing with the bootstrap.</p>
+
+<p>When the <code>knife bootstrap</code> continues, the newly bootstrapped node will get its private key from the workstation, save it as <code>/etc/chef/client.pem</code>, and can use that to unlock the vault items it needs. This works &ndash; it has the key, and the vault has been re-keyed/refreshed from the workstation to allow vault access to testvault-i-35a4119d.</p>
+
+<p>This works great for provisioning/bootstrapping a few nodes from your workstation, but the second part of your question is where things get hairy. In an autoscaling setup with chef-vault you would need to delegate a node in your environment with a large part of the authority that is usually reserved to administrative workstations:</p>
+
+<h1>About chef-vault and autoscaling</h1>
+
+<p>Before we go on, bear in mind what my colleague Nathan Cerney says when talking about secrets and Chef:</p>
+
+<blockquote><p>Secrets management is about a balance between how much you care about your secrets and how much work you’re willing to do.</p></blockquote>
+
+<p>Chef-vault is certainly a step up from generic encrypted data_bags; it&rsquo;s an elegant design and a great fit for relatively static sites. But I find that chef-vault is a poor fit to autoscaling situations for the following reasons:</p>
+
+<ol>
+<li>You would need some privileged node that has the &ldquo;keys to the kingdom&rdquo; to rekey all your vaults for the clients as they come up, which may put some security conscious folks on edge.</li>
+<li>It&rsquo;s completely on you to write an auditing/authorization framework around that privileged node, as there&rsquo;s nothing in chef-vault that provides that</li>
+<li>The provisioning process would have to be single-threaded or use some locking around the vault databags or your vaults will get out of sync, or possibly corrupted</li>
+<li>If you&rsquo;re not willing to delegate rekeying of the vaults to a provisioning node, then you need a human admin to rekeying the vaults with the new search results, and then you have to re-run chef (defeating the whole purpose of autoscaling and automaed provisioning)</li>
+<li>You&rsquo;re potentially subject to node impersonation attacks, which I describe below</li>
+<li>Chef-Vault assumes that the set of Chef-Server administrators includes the set of secret administrators, but this is neither true, nor generally desirable. It&rsquo;s not directly related to autoscaling, but is a point to bear in mind when managing secrets for larger organizations - as <a href="https://www.chef.io/blog/2015/04/28/guest-post-chef-vault-with-large-teams/">noted in this Chef vault blog post</a></li>
+</ol>
+
+
+<p>So, now that the bad news is out of the way, how do you manage secrets with Chef in an autoscaling situation?</p>
+
+<p>Noah Kantrowitz has a good 2014 survey of Chef &amp; Secrets landscape here: <a href="https://coderanger.net/chef-secrets/">https://coderanger.net/chef-secrets/</a> but there have been some interesting developments since then. Three tools you should definitely evaluate are:</p>
+
+<ul>
+<li><a href="https://www.vaultproject.io/">Hashicorp Vault</a> - open-source project from Hashicorp</li>
+<li><a href="https://www.conjur.net/products/secrets-management">Conjur</a> - commercial project from Conjur; distributed as an appliance, either an AWS instance, VM or Docker image you deploy internally</li>
+<li><a href="https://blog.conjur.net/introducing-summon">Conjur Summons</a> - - summon is an opensource secrets bus that interoperates with other secret backends. I happen to be evaluating it this week, based on this sample cookbook: (<a href="https://github.com/conjurinc/summon-chefapi">https://github.com/conjurinc/summon-chefapi</a>)</li>
+</ul>
+
+
+<p>Conjur has some features that I find pretty compelling, one that is relevant here is the <code>hostfactory</code> feature. Any host in a Conjur environment has to have a key to access its secrets. You can authorize hosts yourself as an admin, or you can assign a <code>hostfactory</code> token to an application to delegate host token creation to it, which is what you&rsquo;d want in an autoscaling setup. I have a <a href="https://github.com/pburkholder/conjur_demo">janky demo here</a> if you&rsquo;re interested.</p>
+
+<p>Hashicorp Vault has also generated a lot of interest in the last year. The server is open source, and has an h/a mode with Consul. The folks at Bloomberg have a cookbook for management: <a href="https://github.com/johnbellone/vault-cookbook">https://github.com/johnbellone/vault-cookbook</a></p>
+
+<p>A few other players in the secrets space that Noah didn&rsquo;t mention that I&rsquo;m aware of:
+- KeyWhiz
+- AWS KMS
+- Sneaker (AWS KMS backend)
+- Thycotic
+- CyberArk</p>
+
+<h1>General guidance around secrets with Chef</h1>
+
+<p>You can think about secrets-management with Chef in a hierarchy:</p>
+
+<ol>
+<li>Encrypted data bags(EDBs) with secrets common to all nodes</li>
+<li>EDBs with secrets shared only among nodes with a common role or run_list</li>
+<li>Chef-Vault, or EDBs with the EDB decryption key provided from Chef-Vault</li>
+<li>You may want to take this approach so you can evolve your secrets management from decryption keys coming from chef-vault, to some other service providing the keys.</li>
+<li>As Nathan pointed out, this approach means you &ldquo;have an encrypted data bag, protected by a [key] that’s stored in an encrypted data bag protected by a secret that’s stored in an encrypted data bag protected by the client’s key,&rdquo; so it&rsquo;s less than ideal</li>
+<li>Secret storage services: Conjur or Hashicorp Vault or Red October or the like</li>
+<li>Hardware platforms (HSMs) that are FIPs-compliant and require N approvals and a time-lock</li>
+</ol>
+
+
+<p> Each step up makes your infrastructure more complicated, but protects your secrets better. But even Step 1 is immeasurably better than storing secrets in clear-text, and you shouldn&rsquo;t let the perfect be the enemy of the good. Choose an implementation you can realize, then iterate to make it better.</p>
+
+<h1>What is Chef Inc doing to help? [N.B: My</h1>
+
+<p>This is some of what&rsquo;s going on here:</p>
+
+<ol>
+<li>Providing better documentation and guidance</li>
+<li>This response is a first draft of new knowledge base article, which will incorporate Noah&rsquo;s blog post, with updates</li>
+<li>Taking ownership of Chef Vault. The project was originally a Nordstrom project, and they&rsquo;ve bequeathed it to us we can continue engineering on it while understanding its limitations</li>
+<li>Building better examples of integrating Chef and EDBs with third-party secret providers &ndash; this work is already underway on my team, and questions like yours help spur on that effort.</li>
+</ol>
+
+
+<p>Hope that helps&hellip;</p>
+
+<p>&ndash;Peter</p>
+
+<h1>P.S. What&rsquo;s a node impersonation attack?</h1>
+
+<p>Suppose you have:
+- a provisioning node that rekeys chef-vault based on updated search results
+- an <code>unprivileged</code> role that doesn&rsquo;t have any access to interesting secrets
+- a <code>database</code> role that does have access to interesting secrets</p>
+
+<p>If an attacker gains root on an <code>unprivileged</code> node, then s/he can use the client&rsquo;s key to edit the node&rsquo;s role and change it to <code>database</code>. Further, s/he can then just kill chef-client runs on that node so it doesn&rsquo;t actually become a <code>database</code> node.</p>
+
+<p>Next time the chef-vault is rekeyed, the compromised node (and the attacker) will access to all of the <code>database</code> secrets. Ugh.</p>
+
+<p>This same attack works if you have humans doing the rekeying, because, seriously, do you really vet all of the nodes that show up in the search?</p>
+
+<p>This attack against chef-vault will not be possible when <a href="https://github.com/chef/chef-rfc/blob/master/rfc045-node_state_separation.md">Chef RFC 45</a> is fully implemented, since you can then administratively lock a node&rsquo;s runlist. Pending that implementation, one can also use <a href="http://xanzy.io/projects/chef-guard/introduction/overview.html">Chef-Guard</a> to filter such attacks, or <a href="https://docs.chef.io/analytics.html">Chef Analytics</a> to alert on attempts after-the-fact.</p>
+
+<p>Other references:
+<a href="https://blog.conjur.net/lets-talk-encrypted-data-bags">https://blog.conjur.net/lets-talk-encrypted-data-bags</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[DevOpsDays DC Quick Takeaways]]></title>
+    <link href="http://pburkholder.github.io/blog/2015/06/26/devopsdays-dc-quick-takeaways/"/>
+    <updated>2015-06-26T18:19:10-04:00</updated>
+    <id>http://pburkholder.github.io/blog/2015/06/26/devopsdays-dc-quick-takeaways</id>
+    <content type="html"><![CDATA[<p>DevOpsDays DC key points</p>
+
+<ul>
+<li>John Willis thinks we have lots of reading time on our hands</li>
+<li>Lean Enterprise was focus of one session talk: &ldquo;I read this book and here is
+how I implemented it and it worked for us&rdquo;</li>
+<li>Josh Corman&rsquo;s talk on Rugged DevOps was one of the more interesting relevant
+ones
+
+<ul>
+<li>&lsquo;root access is a bug&rsquo;</li>
+<li>&lsquo;give devs a tool before taking one away&rsquo;</li>
+</ul>
+</li>
+<li>OpenSCAP talk: A lot of the same design goals as Chef audit-mode. Lots of
+  support scans for platforms already. Haven&rsquo;t looked at it yet. Julian may
+  also have thoughts on it.
+
+<ul>
+<li>Fed space loves opensource since procurement process for COTS is so
+painful.</li>
+</ul>
+</li>
+<li>Ken Johnson and Mike Nescott&rsquo;s talk on DevOops security also pretty
+interesting/relevant to the fed space.</li>
+</ul>
+
+
+<p>Open space on Windows Automation
+ - Lots of Powershell
+ - Success stories around <a href="https://octopusdeploy.com/">https://octopusdeploy.com/</a> Octopus for deployments
+   being used to automate release
+ - WINDOWS ADMINS WANT CHEF SERVER TO RUN ON WINDOWS.
+   - Just like Linux/Unix admins shudder when they&rsquo;re told they have to run a
+    core service that is Windows only.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[RFC Report 2015 Jun 18]]></title>
@@ -90,7 +271,7 @@ Gem.path &lt;&lt; "/opt/conjur/embedded/lib/ruby/gems/2.1.0"
 Gem::Specification.reset()
 </code></pre>
 
-<p>It also be sufficient to do <code>Gem.clear_paths</code>, but that also sets your
+<p>It may also be sufficient to do <code>Gem.clear_paths</code>, but that also sets your
 Gem.paths to <code>nil</code> so that doesn&rsquo;t seem right. Haven&rsquo;t tested.</p>
 
 <p>Maybe I should make a PR to alias that to <code>Gem.reload_paths</code></p>
@@ -149,7 +330,7 @@ api_fqdn 'chefserver.cheffian.com'
 # NOT SURE IF NEEDED:
 </code></pre></li>
 <li><p>create a user and an organization with that user associated (<code>-a</code>):
-    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#x6d;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#x70;&#98;&#117;&#114;&#107;&#104;&#x6f;&#108;&#100;&#101;&#x72;&#x40;&#x63;&#104;&#x65;&#x66;&#x2e;&#105;&#x6f;">&#x70;&#98;&#x75;&#x72;&#107;&#x68;&#x6f;&#x6c;&#x64;&#101;&#x72;&#x40;&#x63;&#x68;&#x65;&#102;&#x2e;&#x69;&#x6f;</a> TestPassword -f pdb.pem
+    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#112;&#98;&#117;&#x72;&#107;&#104;&#111;&#108;&#100;&#x65;&#x72;&#x40;&#99;&#x68;&#101;&#x66;&#x2e;&#x69;&#x6f;">&#x70;&#98;&#117;&#114;&#x6b;&#x68;&#111;&#108;&#100;&#101;&#x72;&#x40;&#99;&#x68;&#x65;&#102;&#x2e;&#x69;&#111;</a> TestPassword -f pdb.pem
     sudo chef-server-ctl org-create pdb_org pdb_org -f pdb_org.pem -a pdb</p></li>
 <li>make <code>current_dir/.chef/knife.rb</code> and copy the above .pem file into the <code>.chef</code> directory:
     cd .chef
