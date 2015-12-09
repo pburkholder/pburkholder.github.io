@@ -103,7 +103,7 @@ Hope that helps...
 
 --Peter
 
-# P.S. What's a node impersonation attack?[&nbsp;](#node_impersonation)
+# <a name="node_impersonation"></a>P.S. What's a node impersonation attack?
 
 Suppose you have:
 - a provisioning node that rekeys chef-vault based on updated search results
