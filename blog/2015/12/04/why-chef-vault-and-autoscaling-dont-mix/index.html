@@ -212,6 +212,11 @@
 
 <p>This attack against chef-vault will not be possible when <a href="https://github.com/chef/chef-rfc/blob/master/rfc045-node_state_separation.md">Chef RFC 45</a> is fully implemented, since you can then administratively lock a node&rsquo;s runlist. Pending that implementation, one can also use <a href="http://xanzy.io/projects/chef-guard/introduction/overview.html">Chef-Guard</a> to filter such attacks, or <a href="https://docs.chef.io/analytics.html">Chef Analytics</a> to alert on attempts after-the-fact.</p>
 
+<p><em>Update 2015.12.11</em>: Root compromise is not necessary for impersonation.
+Filching any <code>client.pem</code> <em>or</em> a <code>validation.pem</code> will suffice to update or create
+client/node objects that match the search criteria, and access vaults.
+<em>Protect your keys</em>.</p>
+
 <p>Other references:
 <a href="https://blog.conjur.net/lets-talk-encrypted-data-bags">https://blog.conjur.net/lets-talk-encrypted-data-bags</a></p>
 </div>

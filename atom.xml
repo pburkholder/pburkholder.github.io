@@ -4,7 +4,7 @@
   <title><![CDATA[A Blog]]></title>
   <link href="http://pburkholder.github.io/atom.xml" rel="self"/>
   <link href="http://pburkholder.github.io/"/>
-  <updated>2015-12-09T10:08:24-05:00</updated>
+  <updated>2015-12-11T20:39:04-05:00</updated>
   <id>http://pburkholder.github.io/</id>
   <author>
     <name><![CDATA[Peter Burkholder]]></name>
@@ -145,6 +145,11 @@
 <p>This same attack works if you have humans doing the rekeying, because, seriously, do you really vet all of the nodes that show up in the search?</p>
 
 <p>This attack against chef-vault will not be possible when <a href="https://github.com/chef/chef-rfc/blob/master/rfc045-node_state_separation.md">Chef RFC 45</a> is fully implemented, since you can then administratively lock a node&rsquo;s runlist. Pending that implementation, one can also use <a href="http://xanzy.io/projects/chef-guard/introduction/overview.html">Chef-Guard</a> to filter such attacks, or <a href="https://docs.chef.io/analytics.html">Chef Analytics</a> to alert on attempts after-the-fact.</p>
+
+<p><em>Update 2015.12.11</em>: Root compromise is not necessary for impersonation.
+Filching any <code>client.pem</code> <em>or</em> a <code>validation.pem</code> will suffice to update or create
+client/node objects that match the search criteria, and access vaults.
+<em>Protect your keys</em>.</p>
 
 <p>Other references:
 <a href="https://blog.conjur.net/lets-talk-encrypted-data-bags">https://blog.conjur.net/lets-talk-encrypted-data-bags</a></p>
@@ -330,7 +335,7 @@ api_fqdn 'chefserver.cheffian.com'
 # NOT SURE IF NEEDED:
 </code></pre></li>
 <li><p>create a user and an organization with that user associated (<code>-a</code>):
-    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#x3a;&#112;&#98;&#117;&#x72;&#x6b;&#x68;&#x6f;&#x6c;&#x64;&#x65;&#114;&#x40;&#99;&#x68;&#x65;&#102;&#46;&#x69;&#x6f;">&#x70;&#98;&#x75;&#x72;&#x6b;&#104;&#111;&#108;&#100;&#x65;&#x72;&#64;&#99;&#x68;&#101;&#x66;&#46;&#x69;&#111;</a> TestPassword -f pdb.pem
+    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#58;&#112;&#x62;&#x75;&#x72;&#x6b;&#104;&#x6f;&#108;&#100;&#101;&#x72;&#64;&#x63;&#x68;&#101;&#102;&#46;&#105;&#111;">&#x70;&#98;&#117;&#x72;&#107;&#x68;&#111;&#108;&#x64;&#x65;&#x72;&#x40;&#99;&#x68;&#x65;&#x66;&#46;&#x69;&#x6f;</a> TestPassword -f pdb.pem
     sudo chef-server-ctl org-create pdb_org pdb_org -f pdb_org.pem -a pdb</p></li>
 <li>make <code>current_dir/.chef/knife.rb</code> and copy the above .pem file into the <code>.chef</code> directory:
     cd .chef
