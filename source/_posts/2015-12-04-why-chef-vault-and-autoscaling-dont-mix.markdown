@@ -118,5 +118,12 @@ This same attack works if you have humans doing the rekeying, because, seriously
 
 This attack against chef-vault will not be possible when [Chef RFC 45](https://github.com/chef/chef-rfc/blob/master/rfc045-node_state_separation.md) is fully implemented, since you can then administratively lock a node's runlist. Pending that implementation, one can also use [Chef-Guard](http://xanzy.io/projects/chef-guard/introduction/overview.html) to filter such attacks, or [Chef Analytics](https://docs.chef.io/analytics.html) to alert on attempts after-the-fact.
 
+*Update 2015.12.11*: Root compromise is not necessary for impersonation.
+Filching any `client.pem` _or_ a `validation.pem` will suffice to update or create
+client/node objects that match the search criteria, and access vaults.
+*Protect your keys*.
+
+
+
 Other references:
 https://blog.conjur.net/lets-talk-encrypted-data-bags
