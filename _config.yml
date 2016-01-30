@@ -4,10 +4,10 @@
 
 url: http://pburkholder.github.io
 title: A Blog
-subtitle: Subtitle TKTK
+subtitle: An occasional data tap into Peter Burkholder's brain
 author: Peter Burkholder
 simple_search: https://www.google.com/search
-description:
+description: Another tech blog, by Peter Burkholder
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -91,8 +91,8 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-disqus_short_name: peter_burkholder
-disqus_show_comment_count: false
+disqus_short_name: blogpburkholdercom
+disqus_show_comment_count: true
 
 # Google Analytics
 google_analytics_tracking_id:
