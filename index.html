@@ -9,7 +9,7 @@
   <meta name="author" content="Peter Burkholder">
 
   
-  <meta name="description" content="[Note: The opinions here are mine and do not reflect a position of my employer, Chef Inc.] I received this question through our support team: We’ve &hellip;">
+  <meta name="description" content="Six ways to resolve Chef cookbook version conflicts Problem From one of my customers: Our appdev role now depends on the perforce cookbook from &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,119 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/01/29/6-ways-to-resolve-chef-cookbook-version-conflicts/">6 Ways to Resolve Chef Cookbook Version Conflicts</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-01-29T19:06:58-05:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>7:06 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Six ways to resolve Chef cookbook version conflicts</p>
+
+<h2>Problem</h2>
+
+<p><em>From one of my customers:</em></p>
+
+<p>Our <code>appdev</code> role now depends on the <code>perforce</code> cookbook from Supermarket. The <code>perforce</code> cookbook&rsquo;s metadata specifies the dependency <code>depends windows, '~&gt; 1.38'</code></p>
+
+<p>Problem is, we&rsquo;ve pinned our five environments to windows 1.36.1, and we&rsquo;re not in a position to upgrade to 1.38.0 just now.</p>
+
+<p>We&rsquo;re using a current version of chef-client and chef-server. How can we include Perforce in our appdev role without inflicting too much pain on ourselves?</p>
+
+<h2>Solution</h2>
+
+<p>There&rsquo;s no perfect solution for this, as they all have some tradeoffs, so you&rsquo;ll need to decide with path works for you.</p>
+
+<p>This answer refers to the <code>perforce</code> and <code>windows</code> cookbooks per the original answer, but substitute in whatever cookbook constraints you are working under.</p>
+
+<h3>Preliminaries:</h3>
+
+<p>Before we address the various approaches, let&rsquo;s review cookbook dependency management.  First, cookbook dependencies for Chef 11/12 can be specified in any of four places:</p>
+
+<ul>
+<li>The cookbook&rsquo;s <code>metadata.rb</code></li>
+<li>The node&rsquo;s environment, e.g. in an <code>environment.json</code></li>
+<li>The node&rsquo;s role, e.g. in a <code>role.json</code>.  Note: Many chef user&rsquo;s regard this use of roles as an anti-pattern.</li>
+<li>The node&rsquo;s runlist, e.g. <code>"run_list": [ "recipe[foo::bar]@0.1.0" ]</code> Note: This is largely undocumented and unsupported. Do not use.</li>
+</ul>
+
+
+<p>Unlike <code>attributes</code>, there is no precedence for cookbook versions. Instead the chef-server&rsquo;s <code>depsolver</code> will find the newest cookbook version to satisfy all the constraints, or throw a 412 error. You may want to read <a href="https://getchef.zendesk.com/hc/en-us/articles/204381030-Troubleshoot-Cookbook-Dependency-Issues">https://getchef.zendesk.com/hc/en-us/articles/204381030-Troubleshoot-Cookbook-Dependency-Issues</a> if you&rsquo;re trying to identify what cookbook constraint is breaking your chef run.</p>
+
+<p>For newer Chef 12 (server &amp; client) installs, one can use Policyfiles instead of the above approach to specify cookbook dependencies.</p>
+
+<h3>Options</h3>
+
+<p>In brief, here are the options you have:</p>
+
+<ol>
+<li>Use an older version of the offending cookbook</li>
+<li>Fork the offending cookbook and yank the stuff that requires a version newer than you want to use. (Or don&rsquo;t use the perforce cookbook at all, write one that does only what you need)</li>
+<li>Bump to Windows 1.38.0 everywhere</li>
+<li>Move the cookbook constraints from environments to cookbooks</li>
+<li>Create a microenvironment where you could pin to Windows 1.38.0</li>
+<li>Use policyfiles for the nodes in question</li>
+</ol>
+
+
+<p>In more detail:</p>
+
+<h4>Use an older version of the offending cookbook</h4>
+
+<p>If you really want to keep your cookbooks as they are on the Supermarket, this may be an approach that works for you. Or the cookbook author may be able to respond to an issue submission or a pull-request if you have fix that works with wider cookbook version constraints.</p>
+
+<h4>Fork the offending cookbook and yank the stuff that requires a version newer than you want to use. (Or don&rsquo;t use the perforce cookbook at all, write one that does only what you need)</h4>
+
+<p>In this case you are maintaining your own code, but that may be more maintainable than using the Supermarket cookbook</p>
+
+<h4>Bump to Windows 1.38.0 everywhere</h4>
+
+<p>If you have a solid cookbook development and testing pipeline, this is arguably the best solution as you want to keep your code on &lsquo;master&rsquo; as much as possible. However, if your pipeline is still in the works, or you work under change management constraints, you may not have this option.</p>
+
+<h4>Move the cookbook constraints from environments to cookbooks</h4>
+
+<p>However, if you have lots of cookbooks, or have a workflow that leverages <code>berks apply</code> or otherwise is tuned to dependency constraints in environments, then this option is a non-starter.</p>
+
+<h4>Create a <code>microenvironment</code> where you could pin to 1.38.0</h4>
+
+<p>I don&rsquo;t know if <code>microenvironment</code> is a common term for this, but if your currently have, say, <code>sandbox</code>, <code>dev</code>, <code>qa</code>, <code>preprod</code> and <code>prod</code> environments, then you may be okay adding just an <code>appdev</code> environment. However, if your role is ubiquitous, then you might have to go with five new envs: <code>sandbox_appdev</code>, <code>dev_appdev</code>, etc.</p>
+
+<h4>Use policyfiles for the nodes in question</h4>
+
+<p>Chef Policyfile was developed with just this sort of use-case in mind. You could apply a Policy for the <code>appdev</code> nodes in your orgs while leaving all the other nodes in the Chef 11/12 constraint solution world. The Chef Server 12.2.0 and higher can support both types of nodes just fine, so you might want to use this as an opportunity to start working with Policyfile for your applications and nodes.</p>
+
+<p>See also: <a href="https://docs.chef.io/policy.html">https://docs.chef.io/policy.html</a> and <a href="https://www.chef.io/blog/2015/08/18/policyfiles-a-guided-tour/">https://www.chef.io/blog/2015/08/18/policyfiles-a-guided-tour/</a> and <a href="https://github.com/chef/chef-dk/blob/master/POLICYFILE_README.md">https://github.com/chef/chef-dk/blob/master/POLICYFILE_README.md</a></p>
+
+<h1>Related Articles</h1>
+
+<p><a href="https://docs.chef.io/cookbook_versions.html">Chef Docs on Cookbook Versions</a></p>
+
+<p><a href="https://getchef.zendesk.com/hc/en-us/articles/204381030-Troubleshoot-Cookbook-Dependency-Issues">Troubleshoot Cookbook Dependency Issues</a></p>
+
+<h1>Update</h1>
+
+<p>In this case, the problem was solved by the <code>perforce</code> cookbook getting an update to relax the constraints on the versions of the windows cookbook, a variation of number 1, above.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -484,7 +597,7 @@ api_fqdn 'chefserver.cheffian.com'
 # NOT SURE IF NEEDED:
 </code></pre></li>
 <li><p>create a user and an organization with that user associated (<code>-a</code>):
-    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#58;&#112;&#x62;&#x75;&#x72;&#x6b;&#104;&#x6f;&#108;&#100;&#101;&#x72;&#64;&#x63;&#x68;&#101;&#102;&#46;&#105;&#111;">&#x70;&#98;&#117;&#x72;&#107;&#x68;&#111;&#108;&#x64;&#x65;&#x72;&#x40;&#99;&#x68;&#x65;&#x66;&#46;&#x69;&#x6f;</a> TestPassword -f pdb.pem
+    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#112;&#98;&#117;&#114;&#x6b;&#104;&#111;&#108;&#x64;&#101;&#x72;&#x40;&#x63;&#104;&#101;&#x66;&#46;&#105;&#x6f;">&#x70;&#x62;&#117;&#x72;&#x6b;&#104;&#111;&#108;&#100;&#x65;&#114;&#x40;&#x63;&#x68;&#x65;&#x66;&#46;&#x69;&#x6f;</a> TestPassword -f pdb.pem
     sudo chef-server-ctl org-create pdb_org pdb_org -f pdb_org.pem -a pdb</p></li>
 <li>make <code>current_dir/.chef/knife.rb</code> and copy the above .pem file into the <code>.chef</code> directory:
     cd .chef
@@ -705,6 +818,10 @@ policy_group 'prod'
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/01/29/6-ways-to-resolve-chef-cookbook-version-conflicts/">6 Ways to Resolve Chef Cookbook Version Conflicts</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/12/04/why-chef-vault-and-autoscaling-dont-mix/">Why Chef-vault and Autoscaling Don&#8217;t Mix</a>
       </li>
     
@@ -720,10 +837,6 @@ policy_group 'prod'
         <a href="/blog/2015/05/04/that-thing-add-packaged-gems-into-your-gem-path/">That Thing to Add Packaged Gems Into Your GEM PATH</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/04/23/emulating-cookbook-semver-build-numbers-with-chef-policyfiles/">Emulating Cookbook Semver Build Numbers With Chef Policyfiles</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -737,12 +850,25 @@ policy_group 'prod'
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Peter Burkholder -
+  Copyright &copy; 2016 - Peter Burkholder -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
 </footer>
   
+
+<script type="text/javascript">
+      var disqus_shortname = 'peter_burkholder';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 
