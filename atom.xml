@@ -4,7 +4,7 @@
   <title><![CDATA[A Blog]]></title>
   <link href="http://pburkholder.github.io/atom.xml" rel="self"/>
   <link href="http://pburkholder.github.io/"/>
-  <updated>2016-01-29T19:35:56-05:00</updated>
+  <updated>2016-02-03T11:03:55-05:00</updated>
   <id>http://pburkholder.github.io/</id>
   <author>
     <name><![CDATA[Peter Burkholder]]></name>
@@ -12,6 +12,67 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Lambda to Defer Chef Code Evaluation]]></title>
+    <link href="http://pburkholder.github.io/blog/2016/02/03/lambda-to-defer-chef-code-evaluation/"/>
+    <updated>2016-02-03T11:01:43-05:00</updated>
+    <id>http://pburkholder.github.io/blog/2016/02/03/lambda-to-defer-chef-code-evaluation</id>
+    <content type="html"><![CDATA[<p><strong>Draft Note</strong></p>
+
+<p>TKTK: needs explanation</p>
+
+<p>Don&rsquo;t do this, for examplar purposes only:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cookbook_file '/etc/chef/encrypted_data_bag_secret' do
+</span><span class='line'>  source 'encrypted_data_bag_secret'
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'># create an 'aws' lambda to call during converge phase
+</span><span class='line'>aws = lambda do
+</span><span class='line'>  data_bag_item(
+</span><span class='line'>    'encrypted', 'aws', IO.read('/etc/chef/encrypted_data_bag_secret')
+</span><span class='line'>  )
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>template '/home/ubuntu/.s3cfg' do
+</span><span class='line'>  source 's3cfg.erb'
+</span><span class='line'>  owner 'root'
+</span><span class='line'>  group 'root'
+</span><span class='line'>  mode 00744
+</span><span class='line'>  variables lazy {
+</span><span class='line'>    {
+</span><span class='line'>      aws_secret_key: aws.call['aws_secret_key'],
+</span><span class='line'>      aws_access_key: aws.call['aws_access_key']
+</span><span class='line'>    }
+</span><span class='line'>  }
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[6 Ways to Resolve Chef Cookbook Version Conflicts]]></title>
@@ -428,7 +489,7 @@ api_fqdn 'chefserver.cheffian.com'
 # NOT SURE IF NEEDED:
 </code></pre></li>
 <li><p>create a user and an organization with that user associated (<code>-a</code>):
-    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#58;&#x70;&#98;&#x75;&#x72;&#x6b;&#104;&#x6f;&#x6c;&#100;&#101;&#114;&#64;&#x63;&#x68;&#101;&#102;&#x2e;&#105;&#111;">&#x70;&#x62;&#x75;&#114;&#x6b;&#104;&#111;&#x6c;&#100;&#101;&#114;&#x40;&#99;&#104;&#101;&#x66;&#46;&#105;&#x6f;</a> TestPassword -f pdb.pem
+    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#58;&#112;&#98;&#117;&#114;&#x6b;&#104;&#x6f;&#108;&#x64;&#101;&#114;&#x40;&#99;&#x68;&#101;&#102;&#x2e;&#105;&#x6f;">&#x70;&#98;&#117;&#x72;&#107;&#104;&#x6f;&#x6c;&#100;&#x65;&#x72;&#64;&#x63;&#104;&#x65;&#x66;&#x2e;&#x69;&#x6f;</a> TestPassword -f pdb.pem
     sudo chef-server-ctl org-create pdb_org pdb_org -f pdb_org.pem -a pdb</p></li>
 <li>make <code>current_dir/.chef/knife.rb</code> and copy the above .pem file into the <code>.chef</code> directory:
     cd .chef
