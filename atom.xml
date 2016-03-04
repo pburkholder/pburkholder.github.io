@@ -4,7 +4,7 @@
   <title><![CDATA[A Blog]]></title>
   <link href="http://pburkholder.github.io/atom.xml" rel="self"/>
   <link href="http://pburkholder.github.io/"/>
-  <updated>2016-02-03T11:03:55-05:00</updated>
+  <updated>2016-03-04T11:00:58-05:00</updated>
   <id>http://pburkholder.github.io/</id>
   <author>
     <name><![CDATA[Peter Burkholder]]></name>
@@ -12,6 +12,111 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Chef Custom Resources: Here's an Easy Example]]></title>
+    <link href="http://pburkholder.github.io/blog/2016/03/04/chef-custom-resources-heres-an-easy-example/"/>
+    <updated>2016-03-04T10:59:45-05:00</updated>
+    <id>http://pburkholder.github.io/blog/2016/03/04/chef-custom-resources-heres-an-easy-example</id>
+    <content type="html"><![CDATA[<h1>Chef custom resources are easy</h1>
+
+<p>Purpose: Demonstrate a simple custom resource cookbook with tests.</p>
+
+<p>When it comes to programming, I&rsquo;m an inductive learner. To me, a working example is worth a 1000 lines of documentation. The Chef Custom Resource model introduced with the release of 12.4 offers a way to write reusable <em>resources</em> that&rsquo;s far simpler than the Chef LWRP and HWRP models (although those are still fully supported). And there&rsquo;s strong documentation that came with it, to wit:</p>
+
+<ul>
+<li>Docs: <a href="https://docs.chef.io/custom_resources.html">https://docs.chef.io/custom_resources.html</a></li>
+<li>Slides: <a href="https://docs.chef.io/decks/custom_resources.html">https://docs.chef.io/decks/custom_resources.html</a></li>
+<li>Webinar: <a href="https://www.chef.io/webinars/?commid=175693">https://www.chef.io/webinars/?commid=175693</a></li>
+<li>Webinar FAQ: <a href="https://www.chef.io/blog/2015/11/06/custom-resources-in-chef-client-12-5/">https://www.chef.io/blog/2015/11/06/custom-resources-in-chef-client-12-5/</a></li>
+</ul>
+
+
+<p>However, if you just want to see trivially simple example from which you can grow, then the <code>motd_cr</code> cookbook is for you: <a href="https://github.com/pburkholder/motd_custom_resource.">https://github.com/pburkholder/motd_custom_resource.</a></p>
+
+<p>It&rsquo;s a <em>library</em> cookbook, meaning there&rsquo;s no default recipe, and it adds a <code>motd</code> resource to Chef when you add <code>depends "motd_cr"</code> to your <code>metadata.rb</code> any external cookbook.</p>
+
+<p>The relevant custom resource code is in <code>resources/motd.rb</code>, and it&rsquo;s merely this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource_name :motd
+</span><span class='line'>property :message, kind_of: String, name_property: true
+</span><span class='line'>
+</span><span class='line'>action :create do
+</span><span class='line'>  file '/etc/motd' do
+</span><span class='line'>    content "#{message}\n"
+</span><span class='line'>    mode '0644'
+</span><span class='line'>  end
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Yes, it&rsquo;s that&rsquo;s short.</p>
+
+<p>The example cookbooks for testing are in <code>tests/fixtures/cookbooks/test</code>.  Basically  you use the resource like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>motd 'Welcome to my message of the day'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And working tests are in <code>tests/</code> and <code>spec/</code>. Running the kitchen and chefspec tests should convince you it works</p>
+
+<p>I hope this helps you write your own custom resources complete with ChefSpec and Test-Kitchen tests</p>
+
+<p>&ndash; Peter</p>
+
+<h1>TESTS</h1>
+
+<h2>Integration testing</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>kitchen test</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(If you want to use this with the ultra-fast kitchen-dokken framework, do this first:)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>export KITCHEN_LOCAL_YAML=.kitchen.dokken.yml
+</span><span class='line'>eval $(docker-machine env default)</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Unit testing</h2>
+
+<p>ChefSpec and custom resource:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rspec spec/unit/recipes/default_spec.rb</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Anticipated Questions:</h1>
+
+<h2>What about <code>load_current_value</code> and <code>converge_by</code>?</h2>
+
+<p>These aren&rsquo;t generally needed if your custom resource comprises a collection of native chef resources, since each of them will compare the current state to the desired state and take no action when none is needed.</p>
+
+<p>When you are building new resources from Ruby code then you&rsquo;ll need the above methods so your resource follows the test-and-repair approach (idempotency).</p>
+
+<h2>Why doesn&rsquo;t <code>--why-run</code> work as expected?</h2>
+
+<p>It&rsquo;s a bug: <a href="https://github.com/chef/chef/issues/4537">https://github.com/chef/chef/issues/4537</a></p>
+
+<h2>Doesn&rsquo;t the resource need an <code>action :destroy</code>?</h2>
+
+<p>Sure - fork this and write it. It&rsquo;s a learning exercise, not something I expect anyone to use.</p>
+
+<h2>What about poise-style testing?</h2>
+
+<p>Oh that &ndash; to minimize confusion I&rsquo;ve moved it to the <code>poise</code> tag and <code>poise-dev</code> branch of this repo.  Look there for more info.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Lambda to Defer Chef Code Evaluation]]></title>
@@ -489,7 +594,7 @@ api_fqdn 'chefserver.cheffian.com'
 # NOT SURE IF NEEDED:
 </code></pre></li>
 <li><p>create a user and an organization with that user associated (<code>-a</code>):
-    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#58;&#112;&#98;&#117;&#114;&#x6b;&#104;&#x6f;&#108;&#x64;&#101;&#114;&#x40;&#99;&#x68;&#101;&#102;&#x2e;&#105;&#x6f;">&#x70;&#98;&#117;&#x72;&#107;&#104;&#x6f;&#x6c;&#100;&#x65;&#x72;&#64;&#x63;&#104;&#x65;&#x66;&#x2e;&#x69;&#x6f;</a> TestPassword -f pdb.pem
+    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#112;&#x62;&#x75;&#114;&#x6b;&#104;&#x6f;&#108;&#100;&#x65;&#114;&#x40;&#99;&#x68;&#x65;&#102;&#46;&#x69;&#111;">&#112;&#98;&#x75;&#114;&#107;&#x68;&#x6f;&#x6c;&#100;&#101;&#114;&#x40;&#99;&#x68;&#101;&#102;&#x2e;&#105;&#111;</a> TestPassword -f pdb.pem
     sudo chef-server-ctl org-create pdb_org pdb_org -f pdb_org.pem -a pdb</p></li>
 <li>make <code>current_dir/.chef/knife.rb</code> and copy the above .pem file into the <code>.chef</code> directory:
     cd .chef

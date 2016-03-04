@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Chef Custom Resources: Here&#8217;s an Easy Example - A Blog</title>
+  <meta name="author" content="Peter Burkholder">
+
+  
+  <meta name="description" content="Chef custom resources are easy Purpose: Demonstrate a simple custom resource cookbook with tests. When it comes to programming, I&rsquo;m an &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pburkholder.github.io/blog/2016/03/04/chef-custom-resources-heres-an-easy-example/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="A Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">A Blog</a></h1>
+  
+    <h2>An occasional data tap into Peter Burkholder&#8217;s brain</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="pburkholder.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Chef Custom Resources: Here&#8217;s an Easy Example</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-03-04T10:59:45-05:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:59 am</span></time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://pburkholder.github.io">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h1>Chef custom resources are easy</h1>
+
+<p>Purpose: Demonstrate a simple custom resource cookbook with tests.</p>
+
+<p>When it comes to programming, I&rsquo;m an inductive learner. To me, a working example is worth a 1000 lines of documentation. The Chef Custom Resource model introduced with the release of 12.4 offers a way to write reusable <em>resources</em> that&rsquo;s far simpler than the Chef LWRP and HWRP models (although those are still fully supported). And there&rsquo;s strong documentation that came with it, to wit:</p>
+
+<ul>
+<li>Docs: <a href="https://docs.chef.io/custom_resources.html">https://docs.chef.io/custom_resources.html</a></li>
+<li>Slides: <a href="https://docs.chef.io/decks/custom_resources.html">https://docs.chef.io/decks/custom_resources.html</a></li>
+<li>Webinar: <a href="https://www.chef.io/webinars/?commid=175693">https://www.chef.io/webinars/?commid=175693</a></li>
+<li>Webinar FAQ: <a href="https://www.chef.io/blog/2015/11/06/custom-resources-in-chef-client-12-5/">https://www.chef.io/blog/2015/11/06/custom-resources-in-chef-client-12-5/</a></li>
+</ul>
+
+
+<p>However, if you just want to see trivially simple example from which you can grow, then the <code>motd_cr</code> cookbook is for you: <a href="https://github.com/pburkholder/motd_custom_resource.">https://github.com/pburkholder/motd_custom_resource.</a></p>
+
+<p>It&rsquo;s a <em>library</em> cookbook, meaning there&rsquo;s no default recipe, and it adds a <code>motd</code> resource to Chef when you add <code>depends "motd_cr"</code> to your <code>metadata.rb</code> any external cookbook.</p>
+
+<p>The relevant custom resource code is in <code>resources/motd.rb</code>, and it&rsquo;s merely this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource_name :motd
+</span><span class='line'>property :message, kind_of: String, name_property: true
+</span><span class='line'>
+</span><span class='line'>action :create do
+</span><span class='line'>  file '/etc/motd' do
+</span><span class='line'>    content "#{message}\n"
+</span><span class='line'>    mode '0644'
+</span><span class='line'>  end
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Yes, it&rsquo;s that&rsquo;s short.</p>
+
+<p>The example cookbooks for testing are in <code>tests/fixtures/cookbooks/test</code>.  Basically  you use the resource like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>motd 'Welcome to my message of the day'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And working tests are in <code>tests/</code> and <code>spec/</code>. Running the kitchen and chefspec tests should convince you it works</p>
+
+<p>I hope this helps you write your own custom resources complete with ChefSpec and Test-Kitchen tests</p>
+
+<p>&ndash; Peter</p>
+
+<h1>TESTS</h1>
+
+<h2>Integration testing</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>kitchen test</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(If you want to use this with the ultra-fast kitchen-dokken framework, do this first:)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>export KITCHEN_LOCAL_YAML=.kitchen.dokken.yml
+</span><span class='line'>eval $(docker-machine env default)</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Unit testing</h2>
+
+<p>ChefSpec and custom resource:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rspec spec/unit/recipes/default_spec.rb</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Anticipated Questions:</h1>
+
+<h2>What about <code>load_current_value</code> and <code>converge_by</code>?</h2>
+
+<p>These aren&rsquo;t generally needed if your custom resource comprises a collection of native chef resources, since each of them will compare the current state to the desired state and take no action when none is needed.</p>
+
+<p>When you are building new resources from Ruby code then you&rsquo;ll need the above methods so your resource follows the test-and-repair approach (idempotency).</p>
+
+<h2>Why doesn&rsquo;t <code>--why-run</code> work as expected?</h2>
+
+<p>It&rsquo;s a bug: <a href="https://github.com/chef/chef/issues/4537">https://github.com/chef/chef/issues/4537</a></p>
+
+<h2>Doesn&rsquo;t the resource need an <code>action :destroy</code>?</h2>
+
+<p>Sure - fork this and write it. It&rsquo;s a learning exercise, not something I expect anyone to use.</p>
+
+<h2>What about poise-style testing?</h2>
+
+<p>Oh that &ndash; to minimize confusion I&rsquo;ve moved it to the <code>poise</code> tag and <code>poise-dev</code> branch of this repo.  Look there for more info.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Peter Burkholder</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-03-04T10:59:45-05:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:59 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://pburkholder.github.io/blog/2016/03/04/chef-custom-resources-heres-an-easy-example/" data-via="pburkholder" data-counturl="http://pburkholder.github.io/blog/2016/03/04/chef-custom-resources-heres-an-easy-example/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/02/03/lambda-to-defer-chef-code-evaluation/" title="Previous Post: Lambda to defer chef code evaluation">&laquo; Lambda to defer chef code evaluation</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/03/04/chef-custom-resources-heres-an-easy-example/">Chef Custom Resources: Here&#8217;s an Easy Example</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/02/03/lambda-to-defer-chef-code-evaluation/">Lambda to Defer Chef Code Evaluation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/29/6-ways-to-resolve-chef-cookbook-version-conflicts/">6 Ways to Resolve Chef Cookbook Version Conflicts</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/04/why-chef-vault-and-autoscaling-dont-mix/">Why Chef-vault and Autoscaling Don&#8217;t Mix</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/26/devopsdays-dc-quick-takeaways/">DevOpsDays DC Quick Takeaways</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Peter Burkholder -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'blogpburkholdercom';
+      
+        
+        // var disqus_developer = 1;
+//        var disqus_identifier = 'http://pburkholder.github.io/blog/2016/03/04/chef-custom-resources-heres-an-easy-example/';
+//        var disqus_url = 'http://pburkholder.github.io/blog/2016/03/04/chef-custom-resources-heres-an-easy-example/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
