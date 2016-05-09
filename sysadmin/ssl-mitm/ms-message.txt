@@ -1,0 +1,47 @@
+From secure@microsoft.com Wed Feb  6 15:41:15 2002
+To: pburkholder@pobox.com
+Cc: "Microsoft Security Response Center" <secure@microsoft.com>
+Subject: No way to prevent loading of root certificates in IE6 (tb)
+Thread-Topic: No way to prevent loading of root certificates in IE6 (tb)
+
+
+Dear Peter:
+
+Thanks for your email.  You can prevent loading of trust root
+certificates into IE6 by disabling the user root store.  This is an
+action an admin can take to prevent some or all users in the network
+from installing a trusted root cert, and this should be applied to any
+kiosk machine.
+
+To disable loading of trust root certificates into IE6,  target a Group
+Policy Object and disable users' ability to select a new root CA to
+trust. 
+
+You can do this as follows:
+
+1.Click Start, click Run, type mmc, and then click OK. 
+
+2.On the Console menu, click Add/Remove Snap-in.
+  
+3.In the Add/Remove Snap-in dialog box, click Add. 
+ 
+4.In the Add Standalone Snap-in dialog box, in the Available standalone
+snap-ins list box, click Group Policy, and then click Add.
+  
+5.In the Group Policy Wizard, click Browse, select the target GPO, click
+OK, and then click Finish to close the Group Policy wizard. The  Group
+Policy Editor appears.
+
+6.In the Group Policy Editor, under Computer Configuration, click
+Windows Settings, click Security Settings, click Public Key Policies,
+and then right click properties on Trusted Root Certification
+Authorities.
+
+7.Uncheck the "Allow users to select new root certification authorities
+(CA) to trust" option.
+
+I hope this helps answer your concern. Please let us know if you think
+we've missed anything and thank you for taking the time to email us.
+
+secure@microsoft.com
+

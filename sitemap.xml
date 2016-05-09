@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://pburkholder.github.io/blog/2016/03/24/windows-chef-client-log-rotation/</loc>
+    <lastmod>2016-03-24T11:16:58-04:00</lastmod>
+  </url>
+  <url>
     <loc>http://pburkholder.github.io/blog/2016/03/04/chef-custom-resources-heres-an-easy-example/</loc>
     <lastmod>2016-03-04T10:59:45-05:00</lastmod>
   </url>
@@ -37,5 +41,12 @@
   </url>
   <url>
     <loc>http://pburkholder.github.io/</loc>
+  </url>
+  <url>
+    <loc>http://pburkholder.github.io/new-page/</loc>
+  </url>
+  <url>
+    <loc>http://pburkholder.github.io/sysadmin/ssl-mitm/index.html</loc>
+    <lastmod>2016-05-09T13:57:37-04:00</lastmod>
   </url>
 </urlset>
