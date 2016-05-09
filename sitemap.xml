@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://pburkholder.github.io/blog/2016/05/09/reviving-ssl-mitm-paper/</loc>
+    <lastmod>2016-05-09T14:11:49-04:00</lastmod>
+  </url>
+  <url>
     <loc>http://pburkholder.github.io/blog/2016/03/24/windows-chef-client-log-rotation/</loc>
     <lastmod>2016-03-24T11:16:58-04:00</lastmod>
   </url>
