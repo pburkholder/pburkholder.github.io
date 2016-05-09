@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>DevOpsDays DC Quick Takeaways - A Blog</title>
+  <title>JMX - Collectd - Graphite - A Blog</title>
   <meta name="author" content="Peter Burkholder">
 
   
-  <meta name="description" content="DevOpsDays DC key points John Willis thinks we have lots of reading time on our hands
-Lean Enterprise was focus of one session talk: &ldquo;I read &hellip;">
+  <meta name="description" content="I finally started sending some key JMX stats into Graphite via our collectd setup. A few notes since I’ll probably forget all about this until I next &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ Lean Enterprise was focus of one session talk: &ldquo;I read &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pburkholder.github.io/blog/2015/06/26/devopsdays-dc-quick-takeaways/">
+  <link rel="canonical" href="http://pburkholder.github.io/blog/2014/01/09/jmx-collectd-graphite/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="A Blog" type="application/atom+xml">
@@ -69,7 +68,7 @@ Lean Enterprise was focus of one session talk: &ldquo;I read &hellip;">
   
   <header>
     
-      <h1 class="entry-title">DevOpsDays DC Quick Takeaways</h1>
+      <h1 class="entry-title">JMX - Collectd - Graphite</h1>
     
     
       <p class="meta">
@@ -78,7 +77,7 @@ Lean Enterprise was focus of one session talk: &ldquo;I read &hellip;">
 
 
 
-<time class='entry-date' datetime='2015-06-26T18:19:10-04:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:19 pm</span></time>
+<time class='entry-date' datetime='2014-01-09T15:42:00-05:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:42 pm</span></time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://pburkholder.github.io">Comments</a>
@@ -88,41 +87,50 @@ Lean Enterprise was focus of one session talk: &ldquo;I read &hellip;">
   </header>
 
 
-<div class="entry-content"><p>DevOpsDays DC key points</p>
+<div class="entry-content"><p>I finally started sending some key JMX stats into Graphite via our collectd setup. A few notes since I’ll probably forget all about this until I next need to configure this.</p>
 
-<ul>
-<li>John Willis thinks we have lots of reading time on our hands</li>
-<li>Lean Enterprise was focus of one session talk: &ldquo;I read this book and here is
-how I implemented it and it worked for us&rdquo;</li>
-<li>Josh Corman&rsquo;s talk on Rugged DevOps was one of the more interesting relevant
-ones
+<p>JMX</p>
 
-<ul>
-<li>&lsquo;root access is a bug&rsquo;</li>
-<li>&lsquo;give devs a tool before taking one away&rsquo;</li>
-</ul>
-</li>
-<li>OpenSCAP talk: A lot of the same design goals as Chef audit-mode. Lots of
-  support scans for platforms already. Haven&rsquo;t looked at it yet. Julian may
-  also have thoughts on it.
+<p>JMX listens on a random port. Ended up adding all of the following to JAVA_OPTS</p>
 
-<ul>
-<li>Fed space loves opensource since procurement process for COTS is so
-painful.</li>
-</ul>
-</li>
-<li>Ken Johnson and Mike Nescott&rsquo;s talk on DevOops security also pretty
-interesting/relevant to the fed space.</li>
-</ul>
+<p>-Dcom.sun.management.jmxremote
+-Dcom.sun.management.jmxremote.authenticate=false
+-Dcom.sun.management.jmxremote.ssl=false
+-Dcom.sun.management.jmxremote.port=19876</p>
 
+<p>What objects and attributes are available to monitor? Enable jmxproxy in tomcat with the following in /etc/tomcat7/tomcat-users.xml</p>
 
-<p>Open space on Windows Automation
- - Lots of Powershell
- - Success stories around <a href="https://octopusdeploy.com/">https://octopusdeploy.com/</a> Octopus for deployments
-   being used to automate release
- - WINDOWS ADMINS WANT CHEF SERVER TO RUN ON WINDOWS.
-   - Just like Linux/Unix admins shudder when they&rsquo;re told they have to run a
-    core service that is Windows only.</p>
+<p><tomcat-user>
+  <user username="tomcat" password="tomcat" roles="tomcat,manager-gui,manager-jmx"/>
+</tomcat-users></p>
+
+<p>and then peruse <a href="http://localhost:8080/manager/jmxproxy/">http://localhost:8080/manager/jmxproxy/</a></p>
+
+<p>collectd</p>
+
+<p>Configured the plugin with Miah’s chef-collectd cookbook. See my recipe and the template at:</p>
+
+<p><a href="https://gist.github.com/pburkholder/8341458">https://gist.github.com/pburkholder/8341458</a></p>
+
+<p>The main changes to the plugin configuration is a change to prefix for the thread_pools and the ‘Type’ for class loading.</p>
+
+<p>carbon-writer</p>
+
+<p>We use the carbon-writer plugin from Gregory Szorc. The plugin didn’t sanitize out double-quotes, which pretty much horked the Graphite browser. This pull request  fixes that.</p>
+
+<p>debugging collectd</p>
+
+<p>The Ubuntu build doesn’t include debugging so turning up the log level to &lsquo;&#8217;debug’ does nothing. And the &rsquo;&lsquo;info’ level gives you almost nothing. The most useful steps for tracking down my issues (which came down to the aforementioned double-quote) was a) running in the foreground:</p>
+
+<p>/usr/sbin/collectd -f -C /etc/collectd/collectd.conf</p>
+
+<p>and enabling the CSV plugin to see what was getting written before going to carbon/graphite.</p>
+
+<p>LoadPlugin csv
+<Plugin csv>
+  DataDir &ldquo;/var/lib/collectd/csv&rdquo;
+  StoreRates false
+</Plugin></p>
 </div>
 
 
@@ -138,7 +146,7 @@ interesting/relevant to the fed space.</li>
 
 
 
-<time class='entry-date' datetime='2015-06-26T18:19:10-04:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:19 pm</span></time>
+<time class='entry-date' datetime='2014-01-09T15:42:00-05:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:42 pm</span></time>
       
 
 
@@ -146,7 +154,7 @@ interesting/relevant to the fed space.</li>
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://pburkholder.github.io/blog/2015/06/26/devopsdays-dc-quick-takeaways/" data-via="pburkholder" data-counturl="http://pburkholder.github.io/blog/2015/06/26/devopsdays-dc-quick-takeaways/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://pburkholder.github.io/blog/2014/01/09/jmx-collectd-graphite/" data-via="pburkholder" data-counturl="http://pburkholder.github.io/blog/2014/01/09/jmx-collectd-graphite/" >Tweet</a>
   
   
   
@@ -155,20 +163,14 @@ interesting/relevant to the fed space.</li>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/06/18/rfc-report-2015-jun-18/" title="Previous Post: RFC report 2015 Jun 18">&laquo; RFC report 2015 Jun 18</a>
+        <a class="basic-alignment left" href="/blog/2013/11/29/its-been-real-tumblr/" title="Previous Post: It's been real, Tumblr">&laquo; It&#8217;s been real, Tumblr</a>
       
       
-        <a class="basic-alignment right" href="/blog/2015/12/04/why-chef-vault-and-autoscaling-dont-mix/" title="Next Post: Why chef-vault and autoscaling don't mix">Why chef-vault and autoscaling don&#8217;t mix &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2014/01/23/fixing-sensuapp-openssl-peer-cert-validation/" title="Next Post: Fixing #sensuapp OpenSSL peer cert validation issues">Fixing #sensuapp OpenSSL peer cert validation issues &raquo;</a>
       
     </p>
   </footer>
 </article>
-
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-  </section>
 
 </div>
 
@@ -223,10 +225,7 @@ interesting/relevant to the fed space.</li>
       var disqus_shortname = 'blogpburkholdercom';
       
         
-        // var disqus_developer = 1;
-//        var disqus_identifier = 'http://pburkholder.github.io/blog/2015/06/26/devopsdays-dc-quick-takeaways/';
-//        var disqus_url = 'http://pburkholder.github.io/blog/2015/06/26/devopsdays-dc-quick-takeaways/';
-        var disqus_script = 'embed.js';
+        var disqus_script = 'count.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

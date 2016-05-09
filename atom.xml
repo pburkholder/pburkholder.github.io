@@ -4,7 +4,7 @@
   <title><![CDATA[A Blog]]></title>
   <link href="http://pburkholder.github.io/atom.xml" rel="self"/>
   <link href="http://pburkholder.github.io/"/>
-  <updated>2016-05-09T17:10:24-04:00</updated>
+  <updated>2016-05-09T18:05:20-04:00</updated>
   <id>http://pburkholder.github.io/</id>
   <author>
     <name><![CDATA[Peter Burkholder]]></name>
@@ -18,34 +18,31 @@
     <link href="http://pburkholder.github.io/blog/2016/05/09/reviving-ssl-mitm-paper/"/>
     <updated>2016-05-09T14:11:49-04:00</updated>
     <id>http://pburkholder.github.io/blog/2016/05/09/reviving-ssl-mitm-paper</id>
-    <content type="html"><![CDATA[<p>Hi - Republishing this artifact from 2002.</p>
+    <content type="html"><![CDATA[<p>Hi - Republishing this artifact from 2002, an overview of how SSL Man-in-the-Middle (MITM) attacks happen, and how to conduct one.</p>
 
-<p><a href="http://blog.pburkholder.com/sysadmin/ssl-mitm/index.html">http://blog.pburkholder.com/sysadmin/ssl-mitm/index.html</a></p>
+<p><a href="http://www.pburkholder.com/sysadmin/ssl-mitm/index.html">http://www.pburkholder.com/sysadmin/ssl-mitm/index.html</a></p>
 
-<p>Used to be the top hit in Google when you search for &lsquo;SSL MITM&rsquo; or &lsquo;SSL
-man-in-the-middle&rsquo;</p>
+<p>Used to be the top hit in Google when you searched for &lsquo;SSL MITM&rsquo; or &lsquo;SSL
+man-in-the-middle.&rsquo; Ah, yes, those short-lived days of relative Internet fame.</p>
 
-<p>Now, not so much. But at least old links will work now that I&rsquo;m moving &lsquo;www&rsquo;
-to link to this site (instead of Tumblr).</p>
+<p>I&rsquo;ve also used this as the impetus to retire from Tumblr and move entirely over to Octopress/GitHub Pages. So all my sundry entries since 2013 are now in one place.</p>
+
+<p>Thanks to Yassine Chaouche ‏<a href="https://twitter.com/ychaouche">\@ychaouche</a> for prompting me to get this back out in the world. And also to Parker Moore <a href="https://byparker.com/">https://byparker.com/</a> for easing the import: <a href="http://import.jekyllrb.com/docs/tumblr/">http://import.jekyllrb.com/docs/tumblr/</a></p>
 
 <p>-P</p>
-
-<h2>References:</h2>
-
-<p><a href="http://www.pburkholder.com/sysadmin/SSL-mitm/index.php">http://www.pburkholder.com/sysadmin/SSL-mitm/index.php</a>
-<a href="http://bit.ly/6N01n">http://bit.ly/6N01n</a>
-<a href="http://t.co/ghRO9dj1">http://t.co/ghRO9dj1</a>
-<a href="http://www.pburkholder.com/sysadmin/SSL-mitm/ms-message.txt">http://www.pburkholder.com/sysadmin/SSL-mitm/ms-message.txt</a>
-<a href="https://twitter.com/ychaouche/status/707548968255885314">https://twitter.com/ychaouche/status/707548968255885314</a></p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Windows Chef-client Log Rotation]]></title>
-    <link href="http://pburkholder.github.io/blog/2016/03/24/windows-chef-client-log-rotation/"/>
-    <updated>2016-03-24T11:16:58-04:00</updated>
-    <id>http://pburkholder.github.io/blog/2016/03/24/windows-chef-client-log-rotation</id>
-    <content type="html"><![CDATA[
+    <title type="html"><![CDATA[A “thank-you” From My Sons’ School]]></title>
+    <link href="http://pburkholder.github.io/blog/2016/04/27/a-thank-you-from-my-sons-school/"/>
+    <updated>2016-04-27T16:30:39-04:00</updated>
+    <id>http://pburkholder.github.io/blog/2016/04/27/a-thank-you-from-my-sons-school</id>
+    <content type="html"><![CDATA[<p>Geophysicist Visits 5th Graders</p>
+
+<p>Today 5th graders were in for a treat. Peter Burkholder, Linus’s Dad spent three Summers working as a Geophysicist in Antarctica some years ago. He gave a riveting presentation about the continent, answered questions, and shared stories about his work. A huge map of Antarctica became the central focus. His powerpoint presentation consisted of many questions. Students chose questions they wanted answered and we were led on a journey of discovery using artifacts and photographs. Students examined fossils, rocks, and a rare piece of calcium carbonate that Peter bought back from his expeditions.</p>
+
+<p>Student questions were insightful and thoughtful. One such question led Peter on a story about using an outhouse while on a field study. His elaborate illustrations illustrated how he used boiling water and a drill to dig a deep hole and how one would build an outhouse on top of it. Did you know that bodily fluids freeze on contact with ice that is -40F? I’ll leave what happens when you use the outhouse over a six week period up to you! Students learned a variety of facts which will add to their research on their question that they are studying at present. Thank you Peter for enriching our learning about Antarctica. The students enjoyed your persentation very much.</p>
 ]]></content>
   </entry>
   
@@ -305,6 +302,33 @@ to link to this site (instead of Tumblr).</p>
 <h1>Update</h1>
 
 <p>In this case, the problem was solved by the <code>perforce</code> cookbook getting an update to relax the constraints on the versions of the windows cookbook, a variation of number 1, above.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[See http://blog.pburkholder.com for New Content]]></title>
+    <link href="http://pburkholder.github.io/blog/2015/12/09/see-httpblogpburkholdercom-for-new-content/"/>
+    <updated>2015-12-09T09:35:22-05:00</updated>
+    <id>http://pburkholder.github.io/blog/2015/12/09/see-httpblogpburkholdercom-for-new-content</id>
+    <content type="html"><![CDATA[<p>Tumble and Medium and Octopress - oh my!</p>
+
+<p>I have new content, it’s just not here.</p>
+
+<p>I’m trying Octopress, which publishes at <a href="http://blog.pburkholder.com">http://blog.pburkholder.com</a></p>
+
+<p>I’ve not moved this over because I may want to move to Medium.</p>
+
+<p>Recent posts:</p>
+
+<p><a href="http://blog.pburkholder.com/blog/2015/12/04/why-chef-vault-and-autoscaling-dont-mix/">http://blog.pburkholder.com/blog/2015/12/04/why-chef-vault-and-autoscaling-dont-mix/</a></p>
+
+<p><a href="http://blog.pburkholder.com/blog/2015/06/26/devopsdays-dc-quick-takeaways/">http://blog.pburkholder.com/blog/2015/06/26/devopsdays-dc-quick-takeaways/</a></p>
+
+<p><a href="http://blog.pburkholder.com/blog/2015/06/18/rfc-report-2015-jun-18/">http://blog.pburkholder.com/blog/2015/06/18/rfc-report-2015-jun-18/</a></p>
+
+<p><a href="http://blog.pburkholder.com/blog/2015/05/04/that-thing-add-packaged-gems-into-your-gem-path/">http://blog.pburkholder.com/blog/2015/05/04/that-thing-add-packaged-gems-into-your-gem-path/</a></p>
+
+<p><a href="http://blog.pburkholder.com/blog/2015/04/23/emulating-cookbook-semver-build-numbers-with-chef-policyfiles/">http://blog.pburkholder.com/blog/2015/04/23/emulating-cookbook-semver-build-numbers-with-chef-policyfiles/</a></p>
 ]]></content>
   </entry>
   
@@ -630,7 +654,7 @@ api_fqdn 'chefserver.cheffian.com'
 # NOT SURE IF NEEDED:
 </code></pre></li>
 <li><p>create a user and an organization with that user associated (<code>-a</code>):
-    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#112;&#x62;&#x75;&#x72;&#x6b;&#104;&#111;&#x6c;&#x64;&#101;&#x72;&#x40;&#99;&#104;&#x65;&#102;&#x2e;&#x69;&#111;">&#x70;&#x62;&#x75;&#114;&#x6b;&#x68;&#111;&#x6c;&#100;&#x65;&#x72;&#x40;&#x63;&#104;&#x65;&#x66;&#46;&#x69;&#x6f;</a> TestPassword -f pdb.pem
+    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#112;&#x62;&#117;&#x72;&#107;&#x68;&#111;&#108;&#x64;&#101;&#x72;&#x40;&#x63;&#x68;&#x65;&#x66;&#46;&#x69;&#111;">&#x70;&#98;&#117;&#x72;&#107;&#x68;&#x6f;&#x6c;&#x64;&#101;&#114;&#x40;&#99;&#x68;&#x65;&#x66;&#46;&#105;&#x6f;</a> TestPassword -f pdb.pem
     sudo chef-server-ctl org-create pdb_org pdb_org -f pdb_org.pem -a pdb</p></li>
 <li>make <code>current_dir/.chef/knife.rb</code> and copy the above .pem file into the <code>.chef</code> directory:
     cd .chef
@@ -831,6 +855,278 @@ policy_group 'prod'
 </code></pre>
 
 <p>Fini.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[I Was Never This Cool in Middle School]]></title>
+    <link href="http://pburkholder.github.io/blog/2014/11/10/i-was-never-this-cool-in-middle-school/"/>
+    <updated>2014-11-10T18:35:53-05:00</updated>
+    <id>http://pburkholder.github.io/blog/2014/11/10/i-was-never-this-cool-in-middle-school</id>
+    <content type="html"><![CDATA[<p>Great drama at D&amp;D this afternoon: The DM revealed that the players had been fighting for the wrong side. The fifth graders were beside themselves with how they were duped by the humans back in the village, who are all cultists. Turns out the guys with tails and fins are the ones trying to stop the Kraken from being resurrected.</p>
+
+<p>Last spring the other DM had all the PCs as acting as undocumented immigrants, having to fight evil while dodging the immigration authorities.</p>
+
+<p>Which makes my middle-school D&amp;D experience even more lame, since there was definitely no greater social context coming into play.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Chef: Running Your 'Security' Resource Last Doesn't Save You]]></title>
+    <link href="http://pburkholder.github.io/blog/2014/11/04/chef-running-your-security-resource-last/"/>
+    <updated>2014-11-04T10:28:41-05:00</updated>
+    <id>http://pburkholder.github.io/blog/2014/11/04/chef-running-your-security-resource-last</id>
+    <content type="html"><![CDATA[<p>I’ve come across the suggestion that corporate requirements come last in the run_list. Why that won’t work if you don’t trust your other Chef devs, with /etc/motd as an example.</p>
+
+<h1>Evil developer early in run_list:</h1>
+
+<p>file &ldquo;bwahahahaha&rdquo; do
+  action :nothing
+  path &ldquo;/etc/motd&rdquo;
+  content &ldquo;All your Appliance are owned by us\n&rdquo;
+  subscribes :create, &ldquo;file[/etc/motd]&rdquo;
+end</p>
+
+<h1>Security team puts MOTD last in run_list:</h1>
+
+<p>file &ldquo;/etc/motd&rdquo; do
+  content &ldquo;Property of Awesome Appliance, Inc.\n&rdquo;
+end</p>
+
+<p>Result:</p>
+
+<p>Recipe: (chef-apply cookbook)::(chef-apply recipe)
+  * file[bwahahahaha] action nothing (skipped due to action :nothing)
+  * file[/etc/motd] action create
+    - create new file /etc/motd
+    - update content in file /etc/motd from none to cd5731
+    &mdash; /etc/motd   2014-11-04 10:19:15.000000000 -0500
+    +++ /tmp/.motd20141104-86735-2lu4fs 2014-11-04 10:19:15.000000000 -0500
+    @@ -1 +1,2 @@
+    +Property of Awesome Appliance, Inc.
+  * file[bwahahahaha] action create
+    - update content in file /etc/motd from cd5731 to 6b34be
+    &mdash; /etc/motd   2014-11-04 10:19:15.000000000 -0500
+    +++ /tmp/.bwahahahaha20141104-86735-qq9idq  2014-11-04 10:19:15.000000000 -0500
+    @@ -1,2 +1,2 @@
+    -Property of Awesome Appliance, Inc.
+    +All your Appliance are owned by us</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[What Happened to Cloud Particle? Did You Present at DevOpsDays? Is It Open Source? I'm Really Interested, as I'm on the Path of Using CloudFormation, but Looking for Something Better.]]></title>
+    <link href="http://pburkholder.github.io/blog/2014/08/29/what-happened-to-cloud-particle-did-you-present/"/>
+    <updated>2014-08-29T07:47:56-04:00</updated>
+    <id>http://pburkholder.github.io/blog/2014/08/29/what-happened-to-cloud-particle-did-you-present</id>
+    <content type="html"><![CDATA[<p>Thanks for asking. The crux of the issue is that I’ve moved on from that employer and no longer have any say in when CloudParticle is open-sourced. I’ve pinged some of my team members, but one is at Burning Man and the other may have mostly dropped of Twitter.</p>
+
+<p>I do hope they open-source CloudParticle soon. It’s definitely superior to CloudFormation, and the syntax is much cleaner than Terraform. The only feature lacking, really, are elastic IPs, because every node resource is realized with auto-scale groups, and EIPs don’t map well to that. (and you want even single nodes to be a 1-node ASG so they get re-instantiated upon failure).</p>
+
+<p>Most likely you can’t wait, so Terraform is definitely worth looking at. Good luck, Peter</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Clearing the Counter Pt II: Knife Cleanup Tweaks #chef]]></title>
+    <link href="http://pburkholder.github.io/blog/2014/07/29/clearing-the-counter-pt-ii-knife-cleanup-tweaks/"/>
+    <updated>2014-07-29T12:50:11-04:00</updated>
+    <id>http://pburkholder.github.io/blog/2014/07/29/clearing-the-counter-pt-ii-knife-cleanup-tweaks</id>
+    <content type="html"><![CDATA[<p>Part Two: knife cleanup versions</p>
+
+<p>A colleague at $WORK discovered a plugin by Marius Ducea which would remove unused cookbook versions from a chef server. The plugin provided you the option of dumping all cookbooks locally before deleting them. The problem we saw was that ‘unused’ meant &lsquo;&#8217;not explicitly pinned’ with equality; it disregarded ~> and >=, etc. So we could not use the plugin without trashing many of our cookbooks in use.</p>
+
+<p>I extended the plugin to take a &ndash;runlist parameter, so it would query the chef server for the cookbook versions needed to satisfy that runlist, and do so for each of the environments present on the server. At the time we were not using Chef’s built-in roles, as some of us had mis-read/mis-understood work such as The Berkshelf Way or A Year with Chef. We had one cookbook work-roles, which in turn had recipes such as workroles::mongo or workroles::api. To clean up cookbooks, I’d run:</p>
+
+<p>knife cleanup versions &ndash;runlist &lsquo;&#8217;workroles::default&rsquo;&#8217;</p>
+
+<p>and it would list all the cookbooks eligible for deletion. Then I’d run that again with the -D option to actually do the deletion. A few score cookbooks would poof go away and our depsolver issues would be gone.</p>
+
+<p>I have a PR open with Marius but I’ve not heard back since Christmas.</p>
+
+<p>Meanwhile, you can use it from my GitHub runlist_feature branch.</p>
+
+<p>What about roles?</p>
+
+<p>Turns out that one master roles cookbook is an anti-pattern. That’s a story for another time. Chef roles are great if they’re kept lightweight; they were unfairly maligned by abuses heaped upon them.</p>
+
+<p>My branch of knife-cleanup doesn’t handle roles well, since it expects a runlist of recipes, so I’ll need to address that.</p>
+
+<p>Unless cookbook clean up has been built into Chef via some other avenue, I’ll fork the current knife-cleanup plugin into a knife-scrub plugin which will build up a runlist for all roles, and keep the versions in use in any environment. Or if Marius has time then we can work on this issue together.</p>
+
+<p>I have a short Part Three forthcoming with some other musings around depsolver and cookbook cleanup. Stay tuned.</p>
+
+<p>Notes:</p>
+
+<p>Marius Ducea’s blog post on knife cleanup
+Useful, to me, Chef api reference
+One of the posts lashing out at Chef roles
+Jira ticket Role Cookbooks are a Chef AntiPattern</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Clearing the Counter: Cookbook Clutter and Knife Cleanup]]></title>
+    <link href="http://pburkholder.github.io/blog/2014/07/28/clearing-the-counter-cookbook-clutter-and-knife/"/>
+    <updated>2014-07-28T19:28:00-04:00</updated>
+    <id>http://pburkholder.github.io/blog/2014/07/28/clearing-the-counter-cookbook-clutter-and-knife</id>
+    <content type="html"><![CDATA[<p>Part One</p>
+
+<p>In a Chef development group with a high rate of cookbook churn, you may eventually find that your Chef server is timing out as the dependency solver (depsolver) works out the correct cookbook version to send to clients based on environment constraints and cookbook constraints. This gets ugly pretty quickly, since the Chef workers tied up doing depsolving aren’t available for servicing other clients. At $WORK, we’d see lots of failed chef client runs, and usually at the most inconvenient of times.</p>
+
+<p>How did things go wrong? Well, we’d have a number of internal cookbooks with metadata.rb include constraints such as:</p>
+
+<p>depends &lsquo;&#8217;java&rsquo;&lsquo;, &rsquo;&lsquo;&lt; 1.14.0&rsquo;&lsquo;
+depends &rsquo;&lsquo;apt&rsquo;&lsquo;, &rsquo;&lsquo;>= 1.8.2&rsquo;&lsquo;
+depends &rsquo;&lsquo;yum&rsquo;&lsquo;, &rsquo;&lsquo;>= 3.0&rsquo;&lsquo;
+depends &rsquo;&lsquo;python&rsquo;&lsquo;
+depends &rsquo;&lsquo;runit&rsquo;&lsquo;, &rsquo;&lsquo;>= 1.5.0&rsquo;&lsquo;
+depends &rsquo;&lsquo;bar&rsquo;&lsquo;, &rsquo;&lsquo;~> 1.1&rsquo;&lsquo;
+depends &rsquo;&lsquo;baz&rsquo;&lsquo;, &rsquo;&lsquo;~> 2.0&rsquo;&#8217;</p>
+
+<p>And when bar has versions 1.1.0, 1.1.1, 1.1.2, and baz has all its versions, and the upstream cookbooks have all their version iterations, all with their own constraints, the depsolver problem space grows exponentially. Eventually, the chef server will kill the long-running depsolvers, where long-running means about five seconds.</p>
+
+<p>Buying yourself time with longer depsolver timeout.</p>
+
+<p>In a pinch, you can throw more resources at the problem, increasing the timeouts and the threads available to the chef server. This is only a short-term stop-gap. As you update more cookbooks, you’ll soon be back to your earlier pain.</p>
+
+<p>Good luck finding where to change those settings, as the omnibus-chef-server project (<a href="https://github.com/opscode/omnibus-chef-server">https://github.com/opscode/omnibus-chef-server</a>) has an attribute defined for default[&lsquo;&#8217;chef_server&rsquo;&lsquo;][&rsquo;&lsquo;erchef&rsquo;&lsquo;][&rsquo;&lsquo;depsolver_timeout&rsquo;&lsquo;], but that attibute isn’t used anywhere *.</p>
+
+<p>What you need to do is edit /var/opt/chef-server/erchef/etc/app.config to change the depsolver_timeout (under the chef_objects key) and the max_count under the pooler key, as show in this diff where the timeout goes to 10,000 ms, and the worker count is bumped to 12:</p>
+
+<p>&mdash; app.config  2014-07-23 20:57:06.714838003 +0000
++++ app.config~ 2014-07-23 21:24:09.674838002 +0000
+@@ -114,7 +114,8 @@
+                   {s3_external_url, host_header},
+                   {s3_url_ttl, 900},
+                   {s3_parallel_ops_timeout, 5000},
+-                  {s3_parallel_ops_fanout, 20}
++                  {s3_parallel_ops_fanout, 20},
++                  {depsolver_timeout, 10000}
+                  ]},
+   {stats_hero, [
+                {udp_socket_pool_size, 1 },
+@@ -148,7 +149,7 @@
+                      {init_count, 20},
+                      {start_mfa, {sqerl_client, start_link, []}} ],
+                     [{name, chef_depsolver},
+-                     {max_count, 5},
++                     {max_count, 12},
+                      {init_count, 5},
+                      {start_mfa, {chef_depsolver_worker, start_link, []}}]
+                  ]},</p>
+
+<p>Then restart the chef-server.</p>
+
+<p>In the next part, I’ll cover how to fix this with a safe cookbook clean-up.</p>
+
+<ul>
+<li>I submitted a fix to the missing attribute problem with this pull request: <a href="https://github.com/opscode/omnibus-chef-server/pull/79">https://github.com/opscode/omnibus-chef-server/pull/79</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[#DNDwKids: Back to HeroLab After DndInsider #dnd]]></title>
+    <link href="http://pburkholder.github.io/blog/2014/02/21/dndwkids-back-to-herolab-after-dndinsider-dnd/"/>
+    <updated>2014-02-21T12:57:13-05:00</updated>
+    <id>http://pburkholder.github.io/blog/2014/02/21/dndwkids-back-to-herolab-after-dndinsider-dnd</id>
+    <content type="html"><![CDATA[<p>Last spring and fall I ran a Pathfinder game with 4th, 5th, and 6th graders at my sons’ school. Each term I had to turn away kids ‘cause I had to cap participation at six players, and even that was too many for the attention span of some of the kids.</p>
+
+<p>Now that I’ve gotten two kids (6th grade and 7th grade) interested in DM&#8217;&lsquo;ing, I’m going have them run two games while I provide support, feedback and guidance.</p>
+
+<p>But we’re switching to DnD 4e since Jesse and Harry each have stacks of 4e books and know the rules much better than for Pathfinder.</p>
+
+<p>At our first session we just worked on converting our existing characters, and rolling up new ones for those who have just joined. I know there are a lot errors but that I would resolve them all by moving from paper to …, well from paper to DnD Insider Character Builder (CB) is what I thought but, jeez, what a beast that is.</p>
+
+<p>I’d used HeroLab last fall and thought it pretty good, but got the sense that the WOTC online tools would be better suited for 4e. So I thought I would be ready to roll once I signed up for 3 months. But the tools require Silverlight, burn through my CPU, and really, really laggy, turning a data entry task into what seems like 15s of waiting between advancing between fields. Creating just one character took about an hour.</p>
+
+<p>Also, it’s clear we’ll be using 4e for at least of couple of years, and there’s rumors that 4e support will be coming to an end.</p>
+
+<p>So, I’m going to give 4e a whirl on HeroLab. The starting process is a bit arcane. First, since I’d already had a fully licensed HeroLab with Pathfinder, I didn’t seem to be able to use the 4e support in demo mode (I may be mistaken on that) unless I purchased the 4e license. Since LoneWolf offers a money-back option within 60 days, I thought I would lay down my $20 and hope for the best.</p>
+
+<p>The 4e package for HeroLab has no content, since LoneWolf doesn’t have a license from WOTC, but instead has a downloader tool. Since I have a DnDInsider subscription it uses those credentials to d/l the data files.</p>
+
+<p>I’m hoping once this completes I’ll have a faster, more usable character management system. Let’s see…</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Chef Shell Attribute Example]]></title>
+    <link href="http://pburkholder.github.io/blog/2014/02/18/chef-shell-attribute-example/"/>
+    <updated>2014-02-18T12:13:03-05:00</updated>
+    <id>http://pburkholder.github.io/blog/2014/02/18/chef-shell-attribute-example</id>
+    <content type="html"><![CDATA[<p>I find the dearth of chef-shell examples on the web really frustrating, so starting my own.</p>
+
+<p>Getting started</p>
+
+<p>root@logstash-i-ab57c6d1:~# export PATH=/opt/chef/embedded/bin:$PATH
+root@logstash-i-ab57c6d1:~# chef-shell -z</p>
+
+<p>Querying node attributes</p>
+
+<p>Get the logstash server outputs:
+“”</p>
+
+<p>  attributes_mode
+  chef:attributes > node[‘logstash’]
+  …
+  chef:attributes > node[:logstash][:server][:outputs].length
+   => 5
+  chef:attributes > node[:logstash][:server][:outputs][0]
+   => {“elasticsearch_http”=>{“host”=>“logstash-elasticsearch.infra.example.in”}}
+  “”</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Pretty Excited About Jumbo Dice for New Season Of]]></title>
+    <link href="http://pburkholder.github.io/blog/2014/02/05/pretty-excited-about-jumbo-dice-for-new-season-of/"/>
+    <updated>2014-02-05T10:34:45-05:00</updated>
+    <id>http://pburkholder.github.io/blog/2014/02/05/pretty-excited-about-jumbo-dice-for-new-season-of</id>
+    <content type="html"><![CDATA[<p>Pretty excited about jumbo dice for new season of #rpgkids. Giving them each a set last fall was a mess #fb</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Fixing #sensuapp OpenSSL Peer Cert Validation Issues]]></title>
+    <link href="http://pburkholder.github.io/blog/2014/01/23/fixing-sensuapp-openssl-peer-cert-validation/"/>
+    <updated>2014-01-23T21:41:00-05:00</updated>
+    <id>http://pburkholder.github.io/blog/2014/01/23/fixing-sensuapp-openssl-peer-cert-validation</id>
+    <content type="html"><![CDATA[<p>Today I used Chef to configure a test sensu-server, but my Hipchat notifications were failing with this snippet in the logs:</p>
+
+<p>/opt/sensu/embedded/lib/ruby/2.0.0/net/http.rb:917:in `connect&#8217;&lsquo;: SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed (OpenSSL::SSL::SSLError)\n&#8221;</p>
+
+<p>I soon determined that the httparty gem was at 0.11.0 on the prod sensu servers, and at 0.12.0 on the new one. Further, that httparty had (wisely) been changed to verify peer certs. No problem, but where to put the CA (Certificate Authority) bundle?</p>
+
+<p>Tracking this down took more of the afternoon than ideal, but eventually I determined that the default SSL cert path can be determined with:</p>
+
+<h1>irb</h1>
+
+<p>irb(main):001:0> require &lsquo;&#8217;openssl&rsquo;&lsquo;
+=> true
+irb(main):002:0> File.dirname OpenSSL::Config::DEFAULT_CONFIG_FILE
+=> &ldquo;/opt/sensu/embedded/ssl&rdquo;</p>
+
+<p>To get the CA certs into embedded ruby we can update the default sensu install with a bit of Chefery</p>
+
+<p>cookbook_file &lsquo;&rsquo;/opt/sensu/embedded/ssl/cert.pem&#8217;&lsquo; do
+  source &ldquo;cert.pem&rdquo;
+  mode 0755
+end</p>
+
+<p>Where cert.pem contents are pulled from ‘<a href="http://curl.haxx.se/ca/cacert.pem%E2%80%99">http://curl.haxx.se/ca/cacert.pem%E2%80%99</a> so we have a complete list of acceptable Certificate Authorites.</p>
+
+<p>Ideally, would submit a PR to <a href="https://github.com/sensu/sensu-build/pulls,">https://github.com/sensu/sensu-build/pulls,</a> but for now I’ll have to content myself with an issue report.</p>
+
+<p>References:</p>
+
+<p><a href="http://www.rdoc.info/stdlib/openssl/OpenSSL/X509/Store:set_default_paths">http://www.rdoc.info/stdlib/openssl/OpenSSL/X509/Store:set_default_paths</a>
+<a href="http://www.rubyinside.com/nethttp-cheat-sheet-2940.html">http://www.rubyinside.com/nethttp-cheat-sheet-2940.html</a>
+<a href="https://github.com/emboss/ruby-openssl/blob/282912788da2247d10281988a2c35818ee14912f/ext/openssl/lib/openssl/ssl-internal.rb">https://github.com/emboss/ruby-openssl/blob/282912788da2247d10281988a2c35818ee14912f/ext/openssl/lib/openssl/ssl-internal.rb</a>
+Update:
+- <a href="https://github.com/sensu/sensu-build/pull/79">https://github.com/sensu/sensu-build/pull/79</a> has a PR to sensu Omnibus to fix this.</p>
 ]]></content>
   </entry>
   

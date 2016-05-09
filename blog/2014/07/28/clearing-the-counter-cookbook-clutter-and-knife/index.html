@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Clearing the Counter: Cookbook Clutter and Knife Cleanup - A Blog</title>
+  <meta name="author" content="Peter Burkholder">
+
+  
+  <meta name="description" content="Part One In a Chef development group with a high rate of cookbook churn, you may eventually find that your Chef server is timing out as the &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pburkholder.github.io/blog/2014/07/28/clearing-the-counter-cookbook-clutter-and-knife/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="A Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">A Blog</a></h1>
+  
+    <h2>An occasional data tap into Peter Burkholder&#8217;s brain</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="pburkholder.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Clearing the Counter: Cookbook Clutter and Knife Cleanup</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-28T19:28:00-04:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>7:28 pm</span></time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://pburkholder.github.io">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Part One</p>
+
+<p>In a Chef development group with a high rate of cookbook churn, you may eventually find that your Chef server is timing out as the dependency solver (depsolver) works out the correct cookbook version to send to clients based on environment constraints and cookbook constraints. This gets ugly pretty quickly, since the Chef workers tied up doing depsolving aren’t available for servicing other clients. At $WORK, we’d see lots of failed chef client runs, and usually at the most inconvenient of times.</p>
+
+<p>How did things go wrong? Well, we’d have a number of internal cookbooks with metadata.rb include constraints such as:</p>
+
+<p>depends &lsquo;&#8217;java&rsquo;&lsquo;, &rsquo;&lsquo;&lt; 1.14.0&rsquo;&lsquo;
+depends &rsquo;&lsquo;apt&rsquo;&lsquo;, &rsquo;&lsquo;>= 1.8.2&rsquo;&lsquo;
+depends &rsquo;&lsquo;yum&rsquo;&lsquo;, &rsquo;&lsquo;>= 3.0&rsquo;&lsquo;
+depends &rsquo;&lsquo;python&rsquo;&lsquo;
+depends &rsquo;&lsquo;runit&rsquo;&lsquo;, &rsquo;&lsquo;>= 1.5.0&rsquo;&lsquo;
+depends &rsquo;&lsquo;bar&rsquo;&lsquo;, &rsquo;&lsquo;~> 1.1&rsquo;&lsquo;
+depends &rsquo;&lsquo;baz&rsquo;&lsquo;, &rsquo;&lsquo;~> 2.0&rsquo;&#8217;</p>
+
+<p>And when bar has versions 1.1.0, 1.1.1, 1.1.2, and baz has all its versions, and the upstream cookbooks have all their version iterations, all with their own constraints, the depsolver problem space grows exponentially. Eventually, the chef server will kill the long-running depsolvers, where long-running means about five seconds.</p>
+
+<p>Buying yourself time with longer depsolver timeout.</p>
+
+<p>In a pinch, you can throw more resources at the problem, increasing the timeouts and the threads available to the chef server. This is only a short-term stop-gap. As you update more cookbooks, you’ll soon be back to your earlier pain.</p>
+
+<p>Good luck finding where to change those settings, as the omnibus-chef-server project (<a href="https://github.com/opscode/omnibus-chef-server">https://github.com/opscode/omnibus-chef-server</a>) has an attribute defined for default[&lsquo;&#8217;chef_server&rsquo;&lsquo;][&rsquo;&lsquo;erchef&rsquo;&lsquo;][&rsquo;&lsquo;depsolver_timeout&rsquo;&lsquo;], but that attibute isn’t used anywhere *.</p>
+
+<p>What you need to do is edit /var/opt/chef-server/erchef/etc/app.config to change the depsolver_timeout (under the chef_objects key) and the max_count under the pooler key, as show in this diff where the timeout goes to 10,000 ms, and the worker count is bumped to 12:</p>
+
+<p>&mdash; app.config  2014-07-23 20:57:06.714838003 +0000
++++ app.config~ 2014-07-23 21:24:09.674838002 +0000
+@@ -114,7 +114,8 @@
+                   {s3_external_url, host_header},
+                   {s3_url_ttl, 900},
+                   {s3_parallel_ops_timeout, 5000},
+-                  {s3_parallel_ops_fanout, 20}
++                  {s3_parallel_ops_fanout, 20},
++                  {depsolver_timeout, 10000}
+                  ]},
+   {stats_hero, [
+                {udp_socket_pool_size, 1 },
+@@ -148,7 +149,7 @@
+                      {init_count, 20},
+                      {start_mfa, {sqerl_client, start_link, []}} ],
+                     [{name, chef_depsolver},
+-                     {max_count, 5},
++                     {max_count, 12},
+                      {init_count, 5},
+                      {start_mfa, {chef_depsolver_worker, start_link, []}}]
+                  ]},</p>
+
+<p>Then restart the chef-server.</p>
+
+<p>In the next part, I’ll cover how to fix this with a safe cookbook clean-up.</p>
+
+<ul>
+<li>I submitted a fix to the missing attribute problem with this pull request: <a href="https://github.com/opscode/omnibus-chef-server/pull/79">https://github.com/opscode/omnibus-chef-server/pull/79</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Peter Burkholder</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-07-28T19:28:00-04:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>7:28 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://pburkholder.github.io/blog/2014/07/28/clearing-the-counter-cookbook-clutter-and-knife/" data-via="pburkholder" data-counturl="http://pburkholder.github.io/blog/2014/07/28/clearing-the-counter-cookbook-clutter-and-knife/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/02/21/dndwkids-back-to-herolab-after-dndinsider-dnd/" title="Previous Post: #DNDwKids: Back to HeroLab after DndInsider #dnd">&laquo; #DNDwKids: Back to HeroLab after DndInsider #dnd</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/07/29/clearing-the-counter-pt-ii-knife-cleanup-tweaks/" title="Next Post: Clearing the Counter Pt II: knife cleanup tweaks #chef ">Clearing the Counter Pt II: knife cleanup tweaks #chef  &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/09/reviving-ssl-mitm-paper/">Reviving My SSL Man-in-the-Middle Paper</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/27/a-thank-you-from-my-sons-school/">A “thank-you” From My Sons’ School</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/04/chef-custom-resources-heres-an-easy-example/">Chef Custom Resources: Here&#8217;s an Easy Example</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/02/03/lambda-to-defer-chef-code-evaluation/">Lambda to Defer Chef Code Evaluation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/29/6-ways-to-resolve-chef-cookbook-version-conflicts/">6 Ways to Resolve Chef Cookbook Version Conflicts</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Peter Burkholder -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'blogpburkholdercom';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
