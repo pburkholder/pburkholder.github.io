@@ -109,10 +109,19 @@
     <lastmod>2013-04-10T21:57:30-04:00</lastmod>
   </url>
   <url>
+    <loc>http://pburkholder.github.io/404.html</loc>
+  </url>
+  <url>
     <loc>http://pburkholder.github.io/blog/archives/</loc>
   </url>
   <url>
     <loc>http://pburkholder.github.io/</loc>
+  </url>
+  <url>
+    <loc>http://pburkholder.github.io/posts/2/</loc>
+  </url>
+  <url>
+    <loc>http://pburkholder.github.io/posts/3/</loc>
   </url>
   <url>
     <loc>http://pburkholder.github.io/sysadmin/ssl-mitm/index.html</loc>
