@@ -4,7 +4,7 @@
   <title><![CDATA[A Blog]]></title>
   <link href="http://pburkholder.github.io/atom.xml" rel="self"/>
   <link href="http://pburkholder.github.io/"/>
-  <updated>2016-05-09T22:48:18-04:00</updated>
+  <updated>2016-05-10T15:25:16-04:00</updated>
   <id>http://pburkholder.github.io/</id>
   <author>
     <name><![CDATA[Peter Burkholder]]></name>
@@ -34,15 +34,20 @@ man-in-the-middle.&rsquo; Ah, yes, those short-lived days of relative Internet f
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[A “thank-you” From My Sons’ School]]></title>
+    <title type="html"><![CDATA[A “Thank You” From My Sons’ School]]></title>
     <link href="http://pburkholder.github.io/blog/2016/04/27/a-thank-you-from-my-sons-school/"/>
     <updated>2016-04-27T16:30:39-04:00</updated>
     <id>http://pburkholder.github.io/blog/2016/04/27/a-thank-you-from-my-sons-school</id>
-    <content type="html"><![CDATA[<p>Geophysicist Visits 5th Graders</p>
+    <content type="html"><![CDATA[<p>My son&rsquo;s teacher, Lisa Woodward, dropped this into our school&rsquo;s weekly
+newsletter.</p>
+
+<blockquote><p>Geophysicist Visits 5th Graders</p>
 
 <p>Today 5th graders were in for a treat. Peter Burkholder, Linus’s Dad spent three Summers working as a Geophysicist in Antarctica some years ago. He gave a riveting presentation about the continent, answered questions, and shared stories about his work. A huge map of Antarctica became the central focus. His powerpoint presentation consisted of many questions. Students chose questions they wanted answered and we were led on a journey of discovery using artifacts and photographs. Students examined fossils, rocks, and a rare piece of calcium carbonate that Peter bought back from his expeditions.</p>
 
-<p>Student questions were insightful and thoughtful. One such question led Peter on a story about using an outhouse while on a field study. His elaborate illustrations illustrated how he used boiling water and a drill to dig a deep hole and how one would build an outhouse on top of it. Did you know that bodily fluids freeze on contact with ice that is -40F? I’ll leave what happens when you use the outhouse over a six week period up to you! Students learned a variety of facts which will add to their research on their question that they are studying at present. Thank you Peter for enriching our learning about Antarctica. The students enjoyed your persentation very much.</p>
+<p>Student questions were insightful and thoughtful. One such question led Peter on a story about using an outhouse while on a field study. His elaborate illustrations illustrated how he used boiling water and a drill to dig a deep hole and how one would build an outhouse on top of it. Did you know that bodily fluids freeze on contact with ice that is -40F? I’ll leave what happens when you use the outhouse over a six week period up to you! Students learned a variety of facts which will add to their research on their question that they are studying at present. Thank you Peter for enriching our learning about Antarctica. The students enjoyed your persentation very much.</p></blockquote>
+
+<p>The outhouse poopsicle story always goes over well with the pre-teen crowd.</p>
 ]]></content>
   </entry>
   
@@ -654,7 +659,7 @@ api_fqdn 'chefserver.cheffian.com'
 # NOT SURE IF NEEDED:
 </code></pre></li>
 <li><p>create a user and an organization with that user associated (<code>-a</code>):
-    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#x70;&#x62;&#117;&#x72;&#107;&#x68;&#x6f;&#108;&#x64;&#101;&#114;&#64;&#99;&#104;&#x65;&#x66;&#x2e;&#105;&#x6f;">&#112;&#x62;&#x75;&#114;&#107;&#x68;&#111;&#108;&#x64;&#x65;&#x72;&#x40;&#99;&#104;&#x65;&#x66;&#46;&#105;&#x6f;</a> TestPassword -f pdb.pem
+    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#112;&#98;&#x75;&#114;&#107;&#x68;&#x6f;&#108;&#x64;&#x65;&#x72;&#x40;&#99;&#x68;&#101;&#x66;&#46;&#105;&#x6f;">&#x70;&#x62;&#117;&#x72;&#x6b;&#104;&#111;&#108;&#100;&#x65;&#114;&#x40;&#99;&#104;&#101;&#102;&#46;&#105;&#x6f;</a> TestPassword -f pdb.pem
     sudo chef-server-ctl org-create pdb_org pdb_org -f pdb_org.pem -a pdb</p></li>
 <li>make <code>current_dir/.chef/knife.rb</code> and copy the above .pem file into the <code>.chef</code> directory:
     cd .chef
