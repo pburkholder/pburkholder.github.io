@@ -149,6 +149,12 @@ man-in-the-middle.&rsquo; Ah, yes, those short-lived days of relative Internet f
 <aside class="sidebar">
   
     <section>
+  <h1>About Me</h1>
+  <p>Peter Burkholder <a href="https://twitter/pburkholder">@pburkholder</a> lives outside of DC in the Maryland suburbs with two
+  cats, one dog, two sons and one spouse. He&#8217;s a geophysicist turned web
+  engineer turned devop. Opinions are mine.
+</section>
+<section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
     
@@ -175,8 +181,46 @@ man-in-the-middle.&rsquo; Ah, yes, those short-lived days of relative Internet f
   </ul>
 </section>
 
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/pburkholder">@pburkholder</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'pburkholder',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
 
 
+<section class="twitterOct">
+  <h1 style="margin-bottom: 0.4em"> Tweets </h1>
+  <a class="twitter-timeline"
+	 data-dnt="true" href="https://twitter.com/pburkholder" 
+     data-widget-id="729860309943521282">
+     
+     Tweets by @pburkholder
+  </a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</section>
 
 
   

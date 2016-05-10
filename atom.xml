@@ -4,7 +4,7 @@
   <title><![CDATA[A Blog]]></title>
   <link href="http://pburkholder.github.io/atom.xml" rel="self"/>
   <link href="http://pburkholder.github.io/"/>
-  <updated>2016-05-09T21:41:05-04:00</updated>
+  <updated>2016-05-09T22:48:18-04:00</updated>
   <id>http://pburkholder.github.io/</id>
   <author>
     <name><![CDATA[Peter Burkholder]]></name>
@@ -654,7 +654,7 @@ api_fqdn 'chefserver.cheffian.com'
 # NOT SURE IF NEEDED:
 </code></pre></li>
 <li><p>create a user and an organization with that user associated (<code>-a</code>):
-    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#58;&#112;&#x62;&#117;&#x72;&#x6b;&#104;&#x6f;&#x6c;&#100;&#101;&#x72;&#64;&#99;&#104;&#x65;&#102;&#x2e;&#x69;&#x6f;">&#112;&#x62;&#117;&#x72;&#107;&#x68;&#111;&#x6c;&#100;&#101;&#x72;&#64;&#99;&#x68;&#101;&#x66;&#46;&#105;&#111;</a> TestPassword -f pdb.pem
+    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#x70;&#x62;&#117;&#x72;&#107;&#x68;&#x6f;&#108;&#x64;&#101;&#114;&#64;&#99;&#104;&#x65;&#x66;&#x2e;&#105;&#x6f;">&#112;&#x62;&#x75;&#114;&#107;&#x68;&#111;&#108;&#x64;&#x65;&#x72;&#x40;&#99;&#104;&#x65;&#x66;&#46;&#105;&#x6f;</a> TestPassword -f pdb.pem
     sudo chef-server-ctl org-create pdb_org pdb_org -f pdb_org.pem -a pdb</p></li>
 <li>make <code>current_dir/.chef/knife.rb</code> and copy the above .pem file into the <code>.chef</code> directory:
     cd .chef

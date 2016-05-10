@@ -137,7 +137,7 @@ api_fqdn 'chefserver.cheffian.com'
 # NOT SURE IF NEEDED:
 </code></pre></li>
 <li><p>create a user and an organization with that user associated (<code>-a</code>):
-    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#58;&#112;&#x62;&#117;&#x72;&#x6b;&#104;&#x6f;&#x6c;&#100;&#101;&#x72;&#64;&#99;&#104;&#x65;&#102;&#x2e;&#x69;&#x6f;">&#112;&#x62;&#117;&#x72;&#107;&#x68;&#111;&#x6c;&#100;&#101;&#x72;&#64;&#99;&#x68;&#101;&#x66;&#46;&#105;&#111;</a> TestPassword -f pdb.pem
+    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#x70;&#x62;&#117;&#x72;&#107;&#x68;&#x6f;&#108;&#x64;&#101;&#114;&#64;&#99;&#104;&#x65;&#x66;&#x2e;&#105;&#x6f;">&#112;&#x62;&#x75;&#114;&#107;&#x68;&#111;&#108;&#x64;&#x65;&#x72;&#x40;&#99;&#104;&#x65;&#x66;&#46;&#105;&#x6f;</a> TestPassword -f pdb.pem
     sudo chef-server-ctl org-create pdb_org pdb_org -f pdb_org.pem -a pdb</p></li>
 <li>make <code>current_dir/.chef/knife.rb</code> and copy the above .pem file into the <code>.chef</code> directory:
     cd .chef
@@ -837,6 +837,12 @@ Update:
 <aside class="sidebar">
   
     <section>
+  <h1>About Me</h1>
+  <p>Peter Burkholder <a href="https://twitter/pburkholder">@pburkholder</a> lives outside of DC in the Maryland suburbs with two
+  cats, one dog, two sons and one spouse. He&#8217;s a geophysicist turned web
+  engineer turned devop. Opinions are mine.
+</section>
+<section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
     
@@ -863,8 +869,46 @@ Update:
   </ul>
 </section>
 
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/pburkholder">@pburkholder</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'pburkholder',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
 
 
+<section class="twitterOct">
+  <h1 style="margin-bottom: 0.4em"> Tweets </h1>
+  <a class="twitter-timeline"
+	 data-dnt="true" href="https://twitter.com/pburkholder" 
+     data-widget-id="729860309943521282">
+     
+     Tweets by @pburkholder
+  </a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</section>
 
 
   
