@@ -9,7 +9,8 @@
   <meta name="author" content="Peter Burkholder">
 
   
-  <meta name="description" content="This is a posting of [https://github.com/pburkholder/buildnumber/blob/master/README.md] policyfiles and builds Demonstrate use of policyfiles to &hellip;">
+  <meta name="description" content="It&rsquo;s Gem::Specification.reset For example, in a Chef cookbook I&rsquo;m installing the conjur package from
+Conjur, and need those Gems &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +66,57 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/04/that-thing-add-packaged-gems-into-your-gem-path/">That Thing to Add Packaged Gems Into Your GEM PATH</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-04T09:28:51-04:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:28 am</span></time>
+        
+           | <a href="/blog/2015/05/04/that-thing-add-packaged-gems-into-your-gem-path/#disqus_thread"
+             data-disqus-identifier="http://pburkholder.github.io/blog/2015/05/04/that-thing-add-packaged-gems-into-your-gem-path/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>It&rsquo;s <code>Gem::Specification.reset</code>  For example, in a Chef cookbook I&rsquo;m installing the <code>conjur</code> package from
+<a href="https://conjur.net">Conjur</a>, and need those Gems available to me during
+Chef&rsquo;s compilation. So:</p>
+
+<pre><code># Install from a downloaded .deb (or .rpm)
+dpkg_package "conjur" do
+  source target_path
+end.run_action(:install)
+
+# Append those embedded gems in my path:
+Gem.path &lt;&lt; "/opt/conjur/embedded/lib/ruby/gems/2.1.0"
+
+# And reload the Gem specifications that are in your .path
+Gem::Specification.reset()
+</code></pre>
+
+<p>It may also be sufficient to do <code>Gem.clear_paths</code>, but that also sets your
+Gem.paths to <code>nil</code> so that doesn&rsquo;t seem right. Haven&rsquo;t tested.</p>
+
+<p>Maybe I should make a PR to alias that to <code>Gem.reload_paths</code></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -137,7 +189,7 @@ api_fqdn 'chefserver.cheffian.com'
 # NOT SURE IF NEEDED:
 </code></pre></li>
 <li><p>create a user and an organization with that user associated (<code>-a</code>):
-    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#112;&#x62;&#117;&#x72;&#107;&#x68;&#111;&#x6c;&#100;&#x65;&#x72;&#64;&#x63;&#104;&#101;&#x66;&#46;&#x69;&#111;">&#112;&#x62;&#x75;&#114;&#107;&#104;&#x6f;&#108;&#x64;&#x65;&#114;&#64;&#x63;&#x68;&#101;&#102;&#x2e;&#x69;&#x6f;</a> TestPassword -f pdb.pem
+    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#x70;&#98;&#x75;&#x72;&#107;&#x68;&#111;&#x6c;&#x64;&#x65;&#x72;&#64;&#x63;&#104;&#x65;&#102;&#x2e;&#105;&#x6f;">&#x70;&#98;&#x75;&#x72;&#107;&#x68;&#x6f;&#x6c;&#x64;&#101;&#x72;&#64;&#x63;&#x68;&#x65;&#102;&#x2e;&#105;&#x6f;</a> TestPassword -f pdb.pem
     sudo chef-server-ctl org-create pdb_org pdb_org -f pdb_org.pem -a pdb</p></li>
 <li>make <code>current_dir/.chef/knife.rb</code> and copy the above .pem file into the <code>.chef</code> directory:
     cd .chef
@@ -760,70 +812,6 @@ root@logstash-i-ab57c6d1:~# chef-shell -z</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/23/fixing-sensuapp-openssl-peer-cert-validation/">Fixing #sensuapp OpenSSL Peer Cert Validation Issues</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-01-23T21:41:00-05:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2014</span></span> <span class='time'>9:41 pm</span></time>
-        
-           | <a href="/blog/2014/01/23/fixing-sensuapp-openssl-peer-cert-validation/#disqus_thread"
-             data-disqus-identifier="http://pburkholder.github.io/blog/2014/01/23/fixing-sensuapp-openssl-peer-cert-validation/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Today I used Chef to configure a test sensu-server, but my Hipchat notifications were failing with this snippet in the logs:</p>
-
-<p>/opt/sensu/embedded/lib/ruby/2.0.0/net/http.rb:917:in `connect&#8217;&lsquo;: SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed (OpenSSL::SSL::SSLError)\n&#8221;</p>
-
-<p>I soon determined that the httparty gem was at 0.11.0 on the prod sensu servers, and at 0.12.0 on the new one. Further, that httparty had (wisely) been changed to verify peer certs. No problem, but where to put the CA (Certificate Authority) bundle?</p>
-
-<p>Tracking this down took more of the afternoon than ideal, but eventually I determined that the default SSL cert path can be determined with:</p>
-
-<h1>irb</h1>
-
-<p>irb(main):001:0> require &lsquo;&#8217;openssl&rsquo;&lsquo;
-=> true
-irb(main):002:0> File.dirname OpenSSL::Config::DEFAULT_CONFIG_FILE
-=> &ldquo;/opt/sensu/embedded/ssl&rdquo;</p>
-
-<p>To get the CA certs into embedded ruby we can update the default sensu install with a bit of Chefery</p>
-
-<p>cookbook_file &lsquo;&rsquo;/opt/sensu/embedded/ssl/cert.pem&#8217;&lsquo; do
-  source &ldquo;cert.pem&rdquo;
-  mode 0755
-end</p>
-
-<p>Where cert.pem contents are pulled from ‘<a href="http://curl.haxx.se/ca/cacert.pem%E2%80%99">http://curl.haxx.se/ca/cacert.pem%E2%80%99</a> so we have a complete list of acceptable Certificate Authorites.</p>
-
-<p>Ideally, would submit a PR to <a href="https://github.com/sensu/sensu-build/pulls,">https://github.com/sensu/sensu-build/pulls,</a> but for now I’ll have to content myself with an issue report.</p>
-
-<p>References:</p>
-
-<p><a href="http://www.rdoc.info/stdlib/openssl/OpenSSL/X509/Store:set_default_paths">http://www.rdoc.info/stdlib/openssl/OpenSSL/X509/Store:set_default_paths</a>
-<a href="http://www.rubyinside.com/nethttp-cheat-sheet-2940.html">http://www.rubyinside.com/nethttp-cheat-sheet-2940.html</a>
-<a href="https://github.com/emboss/ruby-openssl/blob/282912788da2247d10281988a2c35818ee14912f/ext/openssl/lib/openssl/ssl-internal.rb">https://github.com/emboss/ruby-openssl/blob/282912788da2247d10281988a2c35818ee14912f/ext/openssl/lib/openssl/ssl-internal.rb</a>
-Update:
-- <a href="https://github.com/sensu/sensu-build/pull/79">https://github.com/sensu/sensu-build/pull/79</a> has a PR to sensu Omnibus to fix this.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -858,6 +846,10 @@ Update:
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/05/17/reaching-out-to-my-network/">Reaching Out to My Network</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/05/09/reviving-ssl-mitm-paper/">Reviving My SSL Man-in-the-Middle Paper</a>
       </li>
     
@@ -871,10 +863,6 @@ Update:
     
       <li class="post">
         <a href="/blog/2016/02/03/lambda-to-defer-chef-code-evaluation/">Lambda to Defer Chef Code Evaluation</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/01/29/6-ways-to-resolve-chef-cookbook-version-conflicts/">6 Ways to Resolve Chef Cookbook Version Conflicts</a>
       </li>
     
   </ul>

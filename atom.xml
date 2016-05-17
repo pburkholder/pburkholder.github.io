@@ -4,7 +4,7 @@
   <title><![CDATA[A Blog]]></title>
   <link href="http://pburkholder.github.io/atom.xml" rel="self"/>
   <link href="http://pburkholder.github.io/"/>
-  <updated>2016-05-17T15:37:27-04:00</updated>
+  <updated>2016-05-17T15:56:23-04:00</updated>
   <id>http://pburkholder.github.io/</id>
   <author>
     <name><![CDATA[Peter Burkholder]]></name>
@@ -12,6 +12,99 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Reaching Out to My Network]]></title>
+    <link href="http://pburkholder.github.io/blog/2016/05/17/reaching-out-to-my-network/"/>
+    <updated>2016-05-17T15:53:44-04:00</updated>
+    <id>http://pburkholder.github.io/blog/2016/05/17/reaching-out-to-my-network</id>
+    <content type="html"><![CDATA[<p>I wasn&rsquo;t sure where to start for reaching out to my network on my job hunt,
+found some <a href="https://www.themuse.com/advice/help-me-find-a-job-emails-to-send-to-your-network">great advice from The
+Muse</a></p>
+
+<p>My resulting message, which I then customize as needed:</p>
+
+<hr />
+
+<p>I hope all is well.</p>
+
+<p>As you may know, I&rsquo;ve spent most of the last two years with Chef Software,
+working with major Chef customers on successful infrastructure automation rollouts and
+the adoption of DevOps tools and practices.</p>
+
+<p>I am on the hunt for new opportunities in DevOps implementation and
+leadership, which could span infrastructure automation,
+continuous delivery, cloud migration, and compliance/security. I&rsquo;m reaching out to you to ask for
+your help with any leads or contacts. As I was let go as part of a recent corporate
+re-organizaion, I&rsquo;d like to secure a new position by mid-June.</p>
+
+<p>If you know of any job opportunities or leads that you might be able to share
+with me, please send them my way. Below is a summary of my recent positions,
+sample job titles, some parameters that are guiding my job search, and links
+to more detailed backgound material.</p>
+
+<p>Thanks in advance for your help! I hope you are doing well and hope to
+catch up with you personally soon.</p>
+
+<p>Cheers,</p>
+
+<p>Peter</p>
+
+<h3>Recent experience:</h3>
+
+<p>Customer Engineer, Chef Software (2014-2016): Worked with enterprise Chef
+customers to ensure a successful automation strategy and implementation, and
+advocated for adoption of DevOps culture.  Wrote code for core Chef
+bugfixes/features and cookbooks.</p>
+
+<p>Cloud Engineer, Rally Health (2012-2014): Operated a HIPAA-compliant social
+network platform comprising hundreds of nodes in AWS EC2 with team of three
+other engineers.  Supported software engineering team in feature development and roll-out.</p>
+
+<p>Senior Web Engineer, AARP (2008-2012):  Managed web, application,
+database and development machines to serve 3 million pages/day for
+AARP.org, the United State’s largest membership organization.
+Mentored team of four system administrators in Scrum-style approach
+to work management.</p>
+
+<h3>Sample Job Titles:</h3>
+
+<ul>
+<li>Senior DevOps Engineer</li>
+<li>Director of DevOps</li>
+<li>Manager Cloud Operations</li>
+<li>Web Operations Manager</li>
+<li>Senior DevOps Consultant</li>
+<li>Cloud/DevOps Architect</li>
+</ul>
+
+
+<h3>Ideal Institutions or Companies:</h3>
+
+<ul>
+<li>Forward-looking public service, such as 18F or U.S. Digital Service</li>
+<li>Scientific research support, such as NOAA or NASA</li>
+<li>Established NGOs/Non-Profits, such as World Bank or NPR</li>
+<li>Newer companies with established revenue stream</li>
+<li>Established companies with a commitment to modern IT practices</li>
+</ul>
+
+
+<h3>Locations:</h3>
+
+<p>Washington, DC; Arlington, VA; Maryland suburbs; or 100% remote</p>
+
+<h3>Links:</h3>
+
+<ul>
+<li>LinkedIn Profile: <a href="https://linkedin.com/in/pburkholder">https://linkedin.com/in/pburkholder</a></li>
+<li>Resumé: <a href="http://www.pburkholder.com/resume.pdf">http://www.pburkholder.com/resume.pdf</a></li>
+<li>Blog/Website: <a href="http://www.pburkholder.com">http://www.pburkholder.com</a></li>
+<li>Twitter: <a href="https://twitter.com/pburkholder">@pburkholder</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Reviving My SSL Man-in-the-Middle Paper]]></title>
@@ -659,7 +752,7 @@ api_fqdn 'chefserver.cheffian.com'
 # NOT SURE IF NEEDED:
 </code></pre></li>
 <li><p>create a user and an organization with that user associated (<code>-a</code>):
-    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#112;&#x62;&#117;&#x72;&#107;&#x68;&#111;&#x6c;&#100;&#x65;&#x72;&#64;&#x63;&#104;&#101;&#x66;&#46;&#x69;&#111;">&#112;&#x62;&#x75;&#114;&#107;&#104;&#x6f;&#108;&#x64;&#x65;&#114;&#64;&#x63;&#x68;&#101;&#102;&#x2e;&#x69;&#x6f;</a> TestPassword -f pdb.pem
+    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#x70;&#98;&#x75;&#x72;&#107;&#x68;&#111;&#x6c;&#x64;&#x65;&#x72;&#64;&#x63;&#104;&#x65;&#102;&#x2e;&#105;&#x6f;">&#x70;&#98;&#x75;&#x72;&#107;&#x68;&#x6f;&#x6c;&#x64;&#101;&#x72;&#64;&#x63;&#x68;&#x65;&#102;&#x2e;&#105;&#x6f;</a> TestPassword -f pdb.pem
     sudo chef-server-ctl org-create pdb_org pdb_org -f pdb_org.pem -a pdb</p></li>
 <li>make <code>current_dir/.chef/knife.rb</code> and copy the above .pem file into the <code>.chef</code> directory:
     cd .chef
@@ -1091,47 +1184,6 @@ root@logstash-i-ab57c6d1:~# chef-shell -z</p>
     <updated>2014-02-05T10:34:45-05:00</updated>
     <id>http://pburkholder.github.io/blog/2014/02/05/pretty-excited-about-jumbo-dice-for-new-season-of</id>
     <content type="html"><![CDATA[<p>Pretty excited about jumbo dice for new season of #rpgkids. Giving them each a set last fall was a mess #fb</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Fixing #sensuapp OpenSSL Peer Cert Validation Issues]]></title>
-    <link href="http://pburkholder.github.io/blog/2014/01/23/fixing-sensuapp-openssl-peer-cert-validation/"/>
-    <updated>2014-01-23T21:41:00-05:00</updated>
-    <id>http://pburkholder.github.io/blog/2014/01/23/fixing-sensuapp-openssl-peer-cert-validation</id>
-    <content type="html"><![CDATA[<p>Today I used Chef to configure a test sensu-server, but my Hipchat notifications were failing with this snippet in the logs:</p>
-
-<p>/opt/sensu/embedded/lib/ruby/2.0.0/net/http.rb:917:in `connect&#8217;&lsquo;: SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed (OpenSSL::SSL::SSLError)\n&#8221;</p>
-
-<p>I soon determined that the httparty gem was at 0.11.0 on the prod sensu servers, and at 0.12.0 on the new one. Further, that httparty had (wisely) been changed to verify peer certs. No problem, but where to put the CA (Certificate Authority) bundle?</p>
-
-<p>Tracking this down took more of the afternoon than ideal, but eventually I determined that the default SSL cert path can be determined with:</p>
-
-<h1>irb</h1>
-
-<p>irb(main):001:0> require &lsquo;&#8217;openssl&rsquo;&lsquo;
-=> true
-irb(main):002:0> File.dirname OpenSSL::Config::DEFAULT_CONFIG_FILE
-=> &ldquo;/opt/sensu/embedded/ssl&rdquo;</p>
-
-<p>To get the CA certs into embedded ruby we can update the default sensu install with a bit of Chefery</p>
-
-<p>cookbook_file &lsquo;&rsquo;/opt/sensu/embedded/ssl/cert.pem&#8217;&lsquo; do
-  source &ldquo;cert.pem&rdquo;
-  mode 0755
-end</p>
-
-<p>Where cert.pem contents are pulled from ‘<a href="http://curl.haxx.se/ca/cacert.pem%E2%80%99">http://curl.haxx.se/ca/cacert.pem%E2%80%99</a> so we have a complete list of acceptable Certificate Authorites.</p>
-
-<p>Ideally, would submit a PR to <a href="https://github.com/sensu/sensu-build/pulls,">https://github.com/sensu/sensu-build/pulls,</a> but for now I’ll have to content myself with an issue report.</p>
-
-<p>References:</p>
-
-<p><a href="http://www.rdoc.info/stdlib/openssl/OpenSSL/X509/Store:set_default_paths">http://www.rdoc.info/stdlib/openssl/OpenSSL/X509/Store:set_default_paths</a>
-<a href="http://www.rubyinside.com/nethttp-cheat-sheet-2940.html">http://www.rubyinside.com/nethttp-cheat-sheet-2940.html</a>
-<a href="https://github.com/emboss/ruby-openssl/blob/282912788da2247d10281988a2c35818ee14912f/ext/openssl/lib/openssl/ssl-internal.rb">https://github.com/emboss/ruby-openssl/blob/282912788da2247d10281988a2c35818ee14912f/ext/openssl/lib/openssl/ssl-internal.rb</a>
-Update:
-- <a href="https://github.com/sensu/sensu-build/pull/79">https://github.com/sensu/sensu-build/pull/79</a> has a PR to sensu Omnibus to fix this.</p>
 ]]></content>
   </entry>
   

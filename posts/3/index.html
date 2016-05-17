@@ -9,7 +9,7 @@
   <meta name="author" content="Peter Burkholder">
 
   
-  <meta name="description" content="I finally started sending some key JMX stats into Graphite via our collectd setup. A few notes since I’ll probably forget all about this until I next &hellip;">
+  <meta name="description" content="Today I used Chef to configure a test sensu-server, but my Hipchat notifications were failing with this snippet in the logs: /opt/sensu/embedded/lib/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,70 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/23/fixing-sensuapp-openssl-peer-cert-validation/">Fixing #sensuapp OpenSSL Peer Cert Validation Issues</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-01-23T21:41:00-05:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2014</span></span> <span class='time'>9:41 pm</span></time>
+        
+           | <a href="/blog/2014/01/23/fixing-sensuapp-openssl-peer-cert-validation/#disqus_thread"
+             data-disqus-identifier="http://pburkholder.github.io/blog/2014/01/23/fixing-sensuapp-openssl-peer-cert-validation/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Today I used Chef to configure a test sensu-server, but my Hipchat notifications were failing with this snippet in the logs:</p>
+
+<p>/opt/sensu/embedded/lib/ruby/2.0.0/net/http.rb:917:in `connect&#8217;&lsquo;: SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed (OpenSSL::SSL::SSLError)\n&#8221;</p>
+
+<p>I soon determined that the httparty gem was at 0.11.0 on the prod sensu servers, and at 0.12.0 on the new one. Further, that httparty had (wisely) been changed to verify peer certs. No problem, but where to put the CA (Certificate Authority) bundle?</p>
+
+<p>Tracking this down took more of the afternoon than ideal, but eventually I determined that the default SSL cert path can be determined with:</p>
+
+<h1>irb</h1>
+
+<p>irb(main):001:0> require &lsquo;&#8217;openssl&rsquo;&lsquo;
+=> true
+irb(main):002:0> File.dirname OpenSSL::Config::DEFAULT_CONFIG_FILE
+=> &ldquo;/opt/sensu/embedded/ssl&rdquo;</p>
+
+<p>To get the CA certs into embedded ruby we can update the default sensu install with a bit of Chefery</p>
+
+<p>cookbook_file &lsquo;&rsquo;/opt/sensu/embedded/ssl/cert.pem&#8217;&lsquo; do
+  source &ldquo;cert.pem&rdquo;
+  mode 0755
+end</p>
+
+<p>Where cert.pem contents are pulled from ‘<a href="http://curl.haxx.se/ca/cacert.pem%E2%80%99">http://curl.haxx.se/ca/cacert.pem%E2%80%99</a> so we have a complete list of acceptable Certificate Authorites.</p>
+
+<p>Ideally, would submit a PR to <a href="https://github.com/sensu/sensu-build/pulls,">https://github.com/sensu/sensu-build/pulls,</a> but for now I’ll have to content myself with an issue report.</p>
+
+<p>References:</p>
+
+<p><a href="http://www.rdoc.info/stdlib/openssl/OpenSSL/X509/Store:set_default_paths">http://www.rdoc.info/stdlib/openssl/OpenSSL/X509/Store:set_default_paths</a>
+<a href="http://www.rubyinside.com/nethttp-cheat-sheet-2940.html">http://www.rubyinside.com/nethttp-cheat-sheet-2940.html</a>
+<a href="https://github.com/emboss/ruby-openssl/blob/282912788da2247d10281988a2c35818ee14912f/ext/openssl/lib/openssl/ssl-internal.rb">https://github.com/emboss/ruby-openssl/blob/282912788da2247d10281988a2c35818ee14912f/ext/openssl/lib/openssl/ssl-internal.rb</a>
+Update:
+- <a href="https://github.com/sensu/sensu-build/pull/79">https://github.com/sensu/sensu-build/pull/79</a> has a PR to sensu Omnibus to fix this.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -423,6 +487,10 @@ Comment or reach me @pburkholder</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/05/17/reaching-out-to-my-network/">Reaching Out to My Network</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/05/09/reviving-ssl-mitm-paper/">Reviving My SSL Man-in-the-Middle Paper</a>
       </li>
     
@@ -436,10 +504,6 @@ Comment or reach me @pburkholder</p>
     
       <li class="post">
         <a href="/blog/2016/02/03/lambda-to-defer-chef-code-evaluation/">Lambda to Defer Chef Code Evaluation</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/01/29/6-ways-to-resolve-chef-cookbook-version-conflicts/">6 Ways to Resolve Chef Cookbook Version Conflicts</a>
       </li>
     
   </ul>
