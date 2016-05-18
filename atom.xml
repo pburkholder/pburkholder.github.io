@@ -4,7 +4,7 @@
   <title><![CDATA[A Blog]]></title>
   <link href="http://pburkholder.github.io/atom.xml" rel="self"/>
   <link href="http://pburkholder.github.io/"/>
-  <updated>2016-05-17T15:58:14-04:00</updated>
+  <updated>2016-05-18T10:35:21-04:00</updated>
   <id>http://pburkholder.github.io/</id>
   <author>
     <name><![CDATA[Peter Burkholder]]></name>
@@ -33,12 +33,12 @@ the adoption of DevOps tools and practices.</p>
 leadership, which could span infrastructure automation,
 continuous delivery, cloud migration, and compliance/security. I&rsquo;m reaching out to you to ask for
 your help with any leads or contacts. As I was let go as part of a recent corporate
-re-organizaion, I&rsquo;d like to secure a new position by mid-June.</p>
+re-organization, I&rsquo;d like to secure a new position by mid-June.</p>
 
 <p>If you know of any job opportunities or leads that you might be able to share
 with me, please send them my way. Below is a summary of my recent positions,
 sample job titles, some parameters that are guiding my job search, and links
-to more detailed backgound material.</p>
+to more detailed background material.</p>
 
 <p>Thanks in advance for your help! I hope you are doing well and hope to
 catch up with you personally soon.</p>
@@ -47,7 +47,7 @@ catch up with you personally soon.</p>
 
 <p>Peter</p>
 
-<h3>Recent experience:</h3>
+<h3>Recent Experience:</h3>
 
 <p>Customer Engineer, Chef Software (2014-2016): Worked with enterprise Chef
 customers to ensure a successful automation strategy and implementation, and
@@ -749,7 +749,7 @@ api_fqdn 'chefserver.cheffian.com'
 # NOT SURE IF NEEDED:
 </code></pre></li>
 <li><p>create a user and an organization with that user associated (<code>-a</code>):
-    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#111;&#58;&#112;&#98;&#117;&#114;&#107;&#104;&#111;&#x6c;&#x64;&#x65;&#114;&#x40;&#99;&#x68;&#101;&#x66;&#x2e;&#105;&#x6f;">&#x70;&#98;&#117;&#x72;&#107;&#x68;&#x6f;&#108;&#100;&#101;&#114;&#64;&#x63;&#104;&#101;&#x66;&#x2e;&#x69;&#x6f;</a> TestPassword -f pdb.pem
+    sudo chef-server-ctl user-create pdb Peter Burkholder <a href="&#109;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#112;&#x62;&#117;&#x72;&#107;&#x68;&#x6f;&#x6c;&#x64;&#101;&#x72;&#x40;&#99;&#104;&#101;&#102;&#46;&#105;&#x6f;">&#x70;&#x62;&#x75;&#114;&#x6b;&#x68;&#111;&#108;&#x64;&#101;&#x72;&#64;&#x63;&#104;&#x65;&#102;&#46;&#105;&#x6f;</a> TestPassword -f pdb.pem
     sudo chef-server-ctl org-create pdb_org pdb_org -f pdb_org.pem -a pdb</p></li>
 <li>make <code>current_dir/.chef/knife.rb</code> and copy the above .pem file into the <code>.chef</code> directory:
     cd .chef
