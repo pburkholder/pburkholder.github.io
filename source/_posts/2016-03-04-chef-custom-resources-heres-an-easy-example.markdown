@@ -16,7 +16,7 @@ When it comes to programming, I'm an inductive learner. To me, a working example
 * Webinar: https://www.chef.io/webinars/?commid=175693
 * Webinar FAQ: https://www.chef.io/blog/2015/11/06/custom-resources-in-chef-client-12-5/
 
-However, if you just want to see trivially simple example from which you can grow, then the `motd_cr` cookbook is for you: https://github.com/pburkholder/motd_custom_resource.
+However, if you just want to see trivially simple example from which you can grow, then the `motd_cr` cookbook is for you: [https://github.com/pburkholder/motd_custom_resource](https://github.com/pburkholder/motd_custom_resource).
 
 It's a _library_ cookbook, meaning there's no default recipe, and it adds a `motd` resource to Chef when you add `depends "motd_cr"` to your `metadata.rb` any external cookbook.
 
